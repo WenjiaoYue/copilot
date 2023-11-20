@@ -1,0 +1,16 @@
+
+node_modules
+.vscode-test/
+*.vsix
+
+yarn.lock
+yarn-error.log
+
+/out-vsxi
+
+*.node
+
+/vscode.d.ts
+/vscode.proposed.d.ts
+vscode.d.ts
+/out
