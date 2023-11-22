@@ -4,6 +4,7 @@ const CSConfig = {
     SEARCH_PATTERN: /(\/\/|#|--|<!--|\/\*)+(.+)(-->|\*\/)*/,
 };
 
+export const mode = { value: false };  
 export function getSearchURL(site: string, keyword: string) {
     return `https://www.google.com/search?q=site%3A${site}+${keyword.replace(/\s/g, "+")}`;
 }

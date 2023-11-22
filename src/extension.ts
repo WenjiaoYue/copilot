@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 
 import { search } from './utils/search';
 import { matchSearchPhrase } from './utils/matchSearchPhrase';
-
+import { mode } from './config';
 
 function debounce(func: Function, delay: number) {
     let timeoutId: NodeJS.Timeout;
@@ -18,7 +18,15 @@ function debounce(func: Function, delay: number) {
 }
 
 
-export function activate(_: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext) {
+    
+    const disposable = vscode.commands.registerCommand('neuralchat.exchangeMode', () => {        
+        vscode.window.showInformationMessage('Exchange Mode activated!');
+        mode.value = !mode.value;        
+    });
+
+    context.subscriptions.push(disposable);
+    
     const provider: vscode.CompletionItemProvider = {
         provideInlineCompletionItems: async (document, position, context, token) => {
             const textBeforeCursor = document.getText(
