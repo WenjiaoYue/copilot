@@ -68,7 +68,7 @@
 				},
 				"neuralCopilot.settings.sites.githubGist": {
 					"title": "gist.github.com",
-					"description": "Enable searching code in Github Gists",
+					"description": "Enable searching code in Github Gist",
 					"type": "boolean",
 					"default": false
 				},
