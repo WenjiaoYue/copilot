@@ -4,6 +4,7 @@ const CSConfig = {
     SEARCH_PATTERN: /(\/\/|#|--|<!--|\/\*)+(.+)(-->|\*\/)*/,
 };
 
+export const mode = { value: true };  
 export function getSearchURL(site: string, keyword: string) {
     return `https://www.google.com/search?q=site%3A${site}+${keyword.replace(/\s/g, "+")}`;
 }
@@ -16,11 +17,11 @@ type IConfig = {
 }
 
 export function getConfig() {
-    const config = vscode.workspace.getConfiguration("captainStack");
+    const config = vscode.workspace.getConfiguration("neuralCopilot");    
 
     const sites = {
-        "stackoverflow.com": config.settings.sites.stackoverflow,
-        "gist.github.com": config.settings.sites.githubGist
+        "stackoverflow.com": true,
+        "gist.github.com": false
     };
 
     return {

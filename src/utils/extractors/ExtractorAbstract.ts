@@ -8,7 +8,7 @@ export default abstract class ExtractorAbstract {
     abstract URL: string;
 
     isEnabled() {
-        const config = getConfig();
+        const config = getConfig();        
         return this.URL in config.settings.sites && config.settings.sites[this.URL];
     }
 
