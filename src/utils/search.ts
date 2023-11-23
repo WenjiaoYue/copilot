@@ -78,9 +78,11 @@ export async function search(keyword: string): Promise<null | { results: Snippet
         }
 
         // When promise resolved, show finished loading for 5 seconds
-        vscode.window.setStatusBarMessage(`NeuralChat: Finished loading ${results.length} results`);
+        // vscode.window.setStatusBarMessage(`$(sync~spin) NeuralChat: Finished loading ${results.length} results`);
+        vscode.window.setStatusBarMessage(` NeuralChat: Finished loading ${results.length} results`);
     });
 
-    vscode.window.setStatusBarMessage(`NeuralChat: Start loading snippet results...`, promise);
+    vscode.window.setStatusBarMessage(` NeuralChat: Start loading snippet results...`, promise);
+    // vscode.window.setStatusBarMessage(`$(sync~spin) NeuralChat: Start loading snippet results...`, promise);
     return promise;
 }
