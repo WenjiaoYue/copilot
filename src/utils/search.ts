@@ -4,7 +4,7 @@ import { SnippetResult } from "./extractors/ExtractorAbstract";
 import { FetchPageResult, fetchPageTextContent } from "./fetchPageContent";
 
 import * as vscode from 'vscode';
-import { getConfig } from "../config";
+import { getConfig, mode } from "../config";
 
 /**
  * Cache results to avoid VSCode keep refetching
@@ -30,31 +30,32 @@ export async function search(keyword: string): Promise<null | { results: Snippet
         let fetchResult: FetchPageResult;
 
         try {
-            for (const i in SnippetExtractors) {
-                const extractor = SnippetExtractors[i];
-
-                if (extractor.isEnabled()) {
-                    // 
-                    // post 请求 发送， 回传 显示
-                    // 存储到cachedResults
-                    // const urls = await extractor.extractURLFromKeyword(keyword);
-
-                    // for (const y in urls) {
-                    //     fetchResult = await fetchPageTextContent(urls[y]);
-                    //     results = results.concat(extractor.extractSnippets(fetchResult));
-
-                    //     vscode.window.setStatusBarMessage(`${extractor.name} (${y}/${urls.length}): ${results.length} results`, 2000);
-
-                    //     if (results.length >= config.settings.maxResults) {
-                    //         break;
-                    //     }
-                    // }
-
-                    // if (results.length >= config.settings.maxResults) {
-                    //     break;
-                    // }
+            if (mode.value) {
+                // 后端api
+            } else {
+                for (const i in SnippetExtractors) {
+                    const extractor = SnippetExtractors[i];
+    
+                    if (extractor.isEnabled()) {
+                        const urls = await extractor.extractURLFromKeyword(keyword);
+    
+                        for (const y in urls) {
+                            fetchResult = await fetchPageTextContent(urls[y]);
+                            results = results.concat(extractor.extractSnippets(fetchResult));
+    
+                            vscode.window.setStatusBarMessage(`${extractor.name} (${y}/${urls.length}): ${results.length} results`, 2000);
+    
+                            if (results.length >= config.settings.maxResults) {
+                                break;
+                            }
+                        }
+    
+                        if (results.length >= config.settings.maxResults) {
+                            break;
+                        }
+                    }
                 }
-            }
+            }            
 
             cachedResults[keyword] = results;
 

@@ -9,6 +9,8 @@ export default abstract class ExtractorAbstract {
 
     isEnabled() {
         const config = getConfig();
+        console.log('isEnabled', config, config.settings, config.settings.sites, this.URL, config.settings.sites[this.URL]);
+        
         return this.URL in config.settings.sites && config.settings.sites[this.URL];
     }
 
