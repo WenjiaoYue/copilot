@@ -22,11 +22,12 @@ export function matchSearchPhrase(input: string): SearchMatchResult | undefined 
 
     if (match && match.length > 2) {
 
-        const [_, commentSyntax, searchPhrase, commentSyntaxEnd] = match;       
+        const [matchContent, commentSyntax, searchPhrase, commentSyntaxEnd] = match;   
+            
         return {
             commentSyntax,
             commentSyntaxEnd,
-            searchPhrase: `${searchPhrase} ${languageId}`
+            searchPhrase: `${matchContent}`
         };
     }
 

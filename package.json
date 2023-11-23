@@ -39,7 +39,10 @@
 			{
 			  "command": "neuralchat.exchangeMode",
 			  "title": "Exchange Mode",
-			  "icon": "src/images/rightNav.svg"
+			  "icon": {
+				"dark": "src/images/dark/rightNavDark.svg",
+				"light": "src/images/light/rightNavLight.svg"
+			  }
 			}
 		  ],
 		"menus": {
@@ -56,7 +59,7 @@
 			  {
 				"id": "neural-chat-sideBar",
 				"title": "Neural Chat",
-				"icon": "src/images/leftBar.svg"
+				"icon": "src/images/dark/leftBarDark.svg"
 			  }
 			]
 		  },

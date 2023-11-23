@@ -34,22 +34,25 @@ export async function search(keyword: string): Promise<null | { results: Snippet
                 const extractor = SnippetExtractors[i];
 
                 if (extractor.isEnabled()) {
-                    const urls = await extractor.extractURLFromKeyword(keyword);
+                    // 
+                    // post 请求 发送， 回传 显示
+                    // 存储到cachedResults
+                    // const urls = await extractor.extractURLFromKeyword(keyword);
 
-                    for (const y in urls) {
-                        fetchResult = await fetchPageTextContent(urls[y]);
-                        results = results.concat(extractor.extractSnippets(fetchResult));
+                    // for (const y in urls) {
+                    //     fetchResult = await fetchPageTextContent(urls[y]);
+                    //     results = results.concat(extractor.extractSnippets(fetchResult));
 
-                        vscode.window.setStatusBarMessage(`${extractor.name} (${y}/${urls.length}): ${results.length} results`, 2000);
+                    //     vscode.window.setStatusBarMessage(`${extractor.name} (${y}/${urls.length}): ${results.length} results`, 2000);
 
-                        if (results.length >= config.settings.maxResults) {
-                            break;
-                        }
-                    }
+                    //     if (results.length >= config.settings.maxResults) {
+                    //         break;
+                    //     }
+                    // }
 
-                    if (results.length >= config.settings.maxResults) {
-                        break;
-                    }
+                    // if (results.length >= config.settings.maxResults) {
+                    //     break;
+                    // }
                 }
             }
 
@@ -61,9 +64,9 @@ export async function search(keyword: string): Promise<null | { results: Snippet
         }
 
         // When promise resolved, show finished loading for 5 seconds
-        vscode.window.setStatusBarMessage(`CaptainStack: Finished loading ${results.length} results`);
+        vscode.window.setStatusBarMessage(`NeuralChat: Finished loading ${results.length} results`);
     });
 
-    vscode.window.setStatusBarMessage(`CaptainStack: Start loading snippet results...`, promise);
+    vscode.window.setStatusBarMessage(`NeuralChat: Start loading snippet results...`, promise);
     return promise;
 }

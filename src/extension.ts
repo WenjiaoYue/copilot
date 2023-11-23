@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import { search } from './utils/search';
 import { matchSearchPhrase } from './utils/matchSearchPhrase';
 import { mode } from './config';
+import path = require('path');
 
 function debounce(func: Function, delay: number) {
     let timeoutId: NodeJS.Timeout;
@@ -17,16 +18,41 @@ function debounce(func: Function, delay: number) {
     };
 }
 
+function updateMenuIcon(context: vscode.ExtensionContext, isExchangeMode: boolean) {
+    
+    vscode.commands.executeCommand('setContext', 'exchangeModeActive', isExchangeMode);
+    vscode.window.setStatusBarMessage(isExchangeMode ? 'NeuralChat: High Quality Mode' : 'NeuralChat: Fast Mode');
+}
+
+function updateMenuHint(isExchangeMode: boolean) {
+
+    const menuCommand = 'neuralchat.exchangeMode';
+    const menuTitle = isExchangeMode ? 'High Quality Mode' : 'Fast Mode';
+    const menuGroup = 'navigation';
+
+    vscode.commands.executeCommand('setContext', 'exchangeModeActive', isExchangeMode);
+    vscode.window.setStatusBarMessage(menuTitle);
+    vscode.commands.executeCommand('setContext', 'exchangeModeHint', menuTitle);
+
+    vscode.commands.executeCommand('setContext', `menu:${menuCommand}`, true);
+    vscode.commands.executeCommand('setContext', `menu:${menuCommand}:${menuGroup}`, true);
+}
+
 
 export function activate(context: vscode.ExtensionContext) {
-    
-    const disposable = vscode.commands.registerCommand('neuralchat.exchangeMode', () => {        
-        vscode.window.showInformationMessage('Exchange Mode activated!');
-        mode.value = !mode.value;        
+    const disposable = vscode.commands.registerCommand('neuralchat.exchangeMode', () => { 
+        mode.value = !mode.value;    
+        const showInfoMsg = mode.value ? 'High Quality Mode' : 'Fast Mode';
+        vscode.window.showInformationMessage('Exchange Mode activated!',  {
+                title: showInfoMsg,
+                tooltip: '这是操作按钮1的提示文本'
+        });
+        updateMenuIcon(context, mode.value);
+        updateMenuHint( mode.value);    
     });
 
     context.subscriptions.push(disposable);
-    
+
     const provider: vscode.CompletionItemProvider = {
         provideInlineCompletionItems: async (document, position, context, token) => {
             const textBeforeCursor = document.getText(
