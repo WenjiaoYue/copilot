@@ -55,7 +55,7 @@ export async function search(keyword: string): Promise<null | { results: Snippet
                             results = results.concat(extractor.extractSnippets(fetchResult));
                             console.log('results', results);
                             
-                            vscode.window.setStatusBarMessage(`NeuralChat: ${extractor.name} (${y}/${urls.length}): ${results.length} results`, 2000);
+                            vscode.window.setStatusBarMessage(`NeuralCopilot: ${extractor.name} (${y}/${urls.length}): ${results.length} results`, 2000);
 
                             if (results.length >= config.settings.maxResults) {
                                 break;
@@ -78,11 +78,11 @@ export async function search(keyword: string): Promise<null | { results: Snippet
         }
 
         // When promise resolved, show finished loading for 5 seconds
-        // vscode.window.setStatusBarMessage(`$(sync~spin) NeuralChat: Finished loading ${results.length} results`);
-        vscode.window.setStatusBarMessage(` NeuralChat: Finished loading ${results.length} results`);
+        // vscode.window.setStatusBarMessage(`$(sync~spin) NeuralCopilot: Finished loading ${results.length} results`);
+        vscode.window.setStatusBarMessage(` NeuralCopilot: Finished loading ${results.length} results`);
     });
 
-    vscode.window.setStatusBarMessage(` NeuralChat: Start loading snippet results...`, promise);
-    // vscode.window.setStatusBarMessage(`$(sync~spin) NeuralChat: Start loading snippet results...`, promise);
+    vscode.window.setStatusBarMessage(` NeuralCopilot: Start loading snippet results...`, promise);
+    // vscode.window.setStatusBarMessage(`$(sync~spin) NeuralCopilot: Start loading snippet results...`, promise);
     return promise;
 }

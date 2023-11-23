@@ -1,32 +1,17 @@
 {
-	"name": "captain-stack",
-	"displayName": "Captain Stack",
-	"description": "Find snippets codes from Stackoverflow",
-	"version": "0.0.5",
-	"publisher": "captainstack",
-	"icon": "icon.png",
-	"homepage": "https://github.com/hieunc229/copilot-clone",
-	"repository": "https://github.com/hieunc229/copilot-clone",
+	"name": "neural-copilot",
+	"displayName": "Neural Copilot",
+	"description": "Find snippets codes from Neural Copilot",
+	"version": "0.0.1",
+	"publisher": "ITEX",
 	"keywords": [
 		"code-suggestion",
 		"copilot",
-		"code-inference"
+		"neural-copilot"
 	],
 	"engines": {
 		"vscode": "^1.34.0"
 	},
-	"bugs": {
-		"url": "https://github.com/hieunc229/copilot-clone/issues"
-	},
-	"author": {
-		"name": "Hieu Nguyen",
-		"url": "https://hieunguyen.info/"
-	},
-	"contributors": [
-		"Kekschen (https://github.com/Kek5chen)",
-		"Charlie Lin <clin@rollins.edu> (https://clin1234.github.io)"
-	],
-	"license": "MIT",
 	"categories": [
 		"Other"
 	],
@@ -37,7 +22,7 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "neuralchat.exchangeMode",
+				"command": "NeuralCopilot.exchangeMode",
 				"title": "Exchange Mode",
 				"icon": {
 					"dark": "src/images/dark/rightNavDark.svg",
@@ -48,7 +33,7 @@
 		"menus": {
 			"editor/title": [
 				{
-					"command": "neuralchat.exchangeMode",
+					"command": "NeuralCopilot.exchangeMode",
 					"when": "true",
 					"group": "navigation"
 				}
@@ -72,22 +57,22 @@
 			]
 		},
 		"configuration": {
-			"title": "CaptainStack",
+			"title": "NeuralCopilot",
 			"type": "object",
 			"properties": {
-				"captainStack.settings.sites.stackoverflow": {
+				"neuralCopilot.settings.sites.stackoverflow": {
 					"title": "stackoverflow.com",
 					"description": "Enable searching code in StackOverflow",
 					"type": "boolean",
 					"default": true
 				},
-				"captainStack.settings.sites.githubGist": {
+				"neuralCopilot.settings.sites.githubGist": {
 					"title": "gist.github.com",
 					"description": "Enable searching code in Github Gists",
 					"type": "boolean",
 					"default": false
 				},
-				"captainStack.settings.maxResults": {
+				"neuralCopilot.settings.maxResults": {
 					"type": "integer",
 					"description": "Limit the max number of results",
 					"default": 12
