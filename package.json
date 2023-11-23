@@ -37,39 +37,40 @@
 	"contributes": {
 		"commands": [
 			{
-			  "command": "neuralchat.exchangeMode",
-			  "title": "Exchange Mode",
-			  "icon": {
-				"dark": "src/images/dark/rightNavDark.svg",
-				"light": "src/images/light/rightNavLight.svg"
-			  }
+				"command": "neuralchat.exchangeMode",
+				"title": "Exchange Mode",
+				"icon": {
+					"dark": "src/images/dark/rightNavDark.svg",
+					"light": "src/images/light/rightNavLight.svg"
+				}
 			}
-		  ],
+		],
 		"menus": {
 			"editor/title": [
-			  {
-				"command": "neuralchat.exchangeMode",
-				"when": "true",
-				"group": "navigation"
-			  }
+				{
+					"command": "neuralchat.exchangeMode",
+					"when": "true",
+					"group": "navigation"
+				}
 			]
-		  },
+		},
 		"viewsContainers": {
 			"activitybar": [
-			  {
-				"id": "neural-chat-sideBar",
-				"title": "Neural Chat",
-				"icon": "src/images/dark/leftBarDark.svg"
-			  }
+				{
+					"id": "neural-chat-sideBar",
+					"title": "Neural Chat",
+					"icon": "src/images/dark/leftBarDark.svg"
+				}
 			]
-		  },
-		  "views": {
+		},
+		"views": {
 			"neural-chat-sideBar": [
-			  {
-				"id": "sideBar-home",
-				"name": ""
-			  }			]
-		  },
+				{
+					"id": "sideBar-home",
+					"name": ""
+				}
+			]
+		},
 		"configuration": {
 			"title": "CaptainStack",
 			"type": "object",
