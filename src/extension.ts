@@ -52,8 +52,8 @@ export function activate(context: vscode.ExtensionContext) {
                     rs = await search(match.searchPhrase);
                     if (rs) {
                         items = rs.results.map(item => {
-                            console.log(item)
-                            const output = `\n${match.commentSyntax} Source: ${item.sourceURL} ${match.commentSyntaxEnd}\n${item.code}`;
+                            // const output = `\n${match.commentSyntax} Source: ${item.sourceURL} ${match.commentSyntaxEnd}\n${item.code}`;
+                            const output = `\n${item.code}`;
                             return {
                                 text: output,
                                 insertText: output,
@@ -61,12 +61,6 @@ export function activate(context: vscode.ExtensionContext) {
                             };
                         });
                     }
-                    // const output = 'No results found'
-                    // items = [{
-                    //     text: output,
-                    //     insertText: output,
-                    //     range: new vscode.Range(position.translate(0, output.length), position)
-                    // }]
                 } catch (err: any) {
                     vscode.window.showErrorMessage(err.toString());
                 }
