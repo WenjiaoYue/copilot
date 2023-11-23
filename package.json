@@ -37,7 +37,7 @@
 	"contributes": {
 		"commands": [
 			{
-				"command": "neuralchat.exchangeMode",
+				"command": "NeuralCopilot.exchangeMode",
 				"title": "Exchange Mode",
 				"icon": {
 					"dark": "src/images/dark/rightNavDark.svg",
@@ -48,7 +48,7 @@
 		"menus": {
 			"editor/title": [
 				{
-					"command": "neuralchat.exchangeMode",
+					"command": "NeuralCopilot.exchangeMode",
 					"when": "true",
 					"group": "navigation"
 				}
