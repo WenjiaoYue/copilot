@@ -78,11 +78,9 @@ export async function search(keyword: string): Promise<null | { results: Snippet
         }
 
         // When promise resolved, show finished loading for 5 seconds
-        // vscode.window.setStatusBarMessage(`$(sync~spin) NeuralCopilot: Finished loading ${results.length} results`);
-        vscode.window.setStatusBarMessage(` NeuralCopilot: Finished loading ${results.length} results`);
+        vscode.window.setStatusBarMessage(`$(copilot) NeuralCopilot: Finished loading ${results.length} results`);
     });
 
-    vscode.window.setStatusBarMessage(` NeuralCopilot: Start loading snippet results...`, promise);
-    // vscode.window.setStatusBarMessage(`$(sync~spin) NeuralCopilot: Start loading snippet results...`, promise);
+    vscode.window.setStatusBarMessage(`$(sync~spin) NeuralCopilot: Start loading snippet results...`, promise);
     return promise;
 }

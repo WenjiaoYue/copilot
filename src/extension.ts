@@ -20,9 +20,9 @@ function debounce(func: Function, delay: number) {
 
 function updateMenuHint(isExchangeMode: boolean) {
 
-    const menuTitle = isExchangeMode ? 'NeuralCopilot: High Quality Mode' : 'NeuralCopilot: Fast Mode';
+    // const menuTitle = isExchangeMode ? 'NeuralCopilot: High Quality Mode' : 'NeuralCopilot: Fast Mode';
     // have icon
-    // const menuTitle = isExchangeMode ? '$(copilot) NeuralCopilot: High Quality Mode' : '$(copilot) NeuralCopilot: Fast Mode';
+    const menuTitle = isExchangeMode ? '$(copilot) NeuralCopilot: High Quality Mode' : '$(copilot) NeuralCopilot: Fast Mode';
 
     vscode.commands.executeCommand('setContext', 'exchangeModeActive', isExchangeMode);
     vscode.window.setStatusBarMessage(menuTitle);
@@ -56,6 +56,8 @@ export function activate(context: vscode.ExtensionContext) {
                     if (rs) {
                         items = rs.results.map(item => {
                             // const output = `\n${match.commentSyntax} Source: ${item.sourceURL} ${match.commentSyntaxEnd}\n${item.code}`;
+                            console.log('item', item.code);
+                            
                             const output = `\n${item.code}`;
                             return {
                                 text: output,
