@@ -1,6 +1,5 @@
 import CSConfig, { mode } from "../config";
 import { window } from "vscode";
-import { isComment } from "./checkComments";
 
 type SearchMatchResult = {
     commentSyntax: string;
