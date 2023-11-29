@@ -371,7 +371,7 @@ var ChatGPTAPI = class {
     return this._apiKey;
   }
   set apiKey(apiKey) {
-    this._apiKey = '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';
+    this._apiKey = 'apiKey';
   }
   async _buildPrompt(message, opts) {
     const currentDate = (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
@@ -561,7 +561,7 @@ var ChatGPTUnofficialProxyAPI = class {
       const url = this._apiReverseProxyUrl;
       const headers = {
         ...this._headers,
-        Authorization: `Bearer ${this._accessToken}`,
+        Authorization: `Bearer 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`,
         Accept: "text/event-stream",
         "Content-Type": "application/json"
       };

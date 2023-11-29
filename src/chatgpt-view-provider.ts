@@ -262,7 +262,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
 		// TODO
 		const editor = vscode.window.activeTextEditor;
-		let highlighted = ""
+		let highlighted = "";
 		if (editor) {
 			const selection = editor.selection;
 			if (selection && !selection.isEmpty) {
@@ -270,10 +270,10 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 				highlighted = editor.document.getText(selectionRange);
 			}
 		}
-		this.logEvent(`highlighted: ${highlighted}`)
-		this.logEvent(`code: ${options.code}`)
+		this.logEvent(`highlighted: ${highlighted}`);
+		this.logEvent(`code: ${options.code}`);
 
-		prompt = `${prompt} ${highlighted}`
+		prompt = `${prompt} ${highlighted}`;
 
     this.questionCounter++;
 
