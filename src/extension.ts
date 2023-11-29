@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import ChatGptViewProvider from './chatgpt-view-provider';
+
 
 import { search } from './utils/search';
 import { matchSearchPhrase } from './utils/matchSearchPhrase';
@@ -31,6 +33,17 @@ function updateMenuHint(isExchangeMode: boolean) {
 
 export function activate(context: vscode.ExtensionContext) {
 
+
+	const view = vscode.window.registerWebviewViewProvider(
+		"vscode-chatgpt.view",
+		new ChatGptViewProvider(context),
+		{
+			webviewOptions: {
+				retainContextWhenHidden: true,
+			},
+		}
+	);
+
     const disposable = vscode.commands.registerCommand('NeuralCopilot.exchangeMode', () => { 
         mode.value = !mode.value;    
         const showInfoMsg = mode.value ? 'High Quality Mode Activated!' : 'Fast Mode Activated!';
@@ -38,7 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
         updateMenuHint( mode.value);
     });
 
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(view, disposable);
 
     const provider: vscode.CompletionItemProvider = {
         provideInlineCompletionItems: async (document, position, context, token) => {
@@ -78,6 +91,7 @@ export function activate(context: vscode.ExtensionContext) {
     const debouncedProvider = {
         provideInlineCompletionItems: debounce(
             async (document: vscode.TextDocument, position: vscode.Position) => {
+                // return new ChatGptViewProvider(context).provideInlineCompletionItems(document, position, null, null);
                 return provider.provideInlineCompletionItems(document, position, null, null);
             },
             1300 // Adjust the delay time as needed
