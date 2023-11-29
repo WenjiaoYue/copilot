@@ -254,35 +254,34 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
     return question + "\r\n";
   }
 
-  public async sendApiRequest(
-    prompt: string,
-    options: {
-      command: string;
-      code?: string;
-      previousAnswer?: string;
-      language?: string;
-    }
-  ) {
-    if (this.inProgress) {
-      // The AI is still thinking... Do not accept more questions.
-      return;
-    }
+	public async sendApiRequest(prompt: string, options: { command: string, code?: string, previousAnswer?: string, language?: string; }) {
+		if (this.inProgress) {
+			// The AI is still thinking... Do not accept more questions.
+			return;
+		}
 
-    // TODO
-    // 获取 光标选中的所有内容
+		// TODO
+		const editor = vscode.window.activeTextEditor;
+		let highlighted = ""
+		if (editor) {
+			const selection = editor.selection;
+			if (selection && !selection.isEmpty) {
+				const selectionRange = new vscode.Range(selection.start.line, selection.start.character, selection.end.line, selection.end.character);
+				highlighted = editor.document.getText(selectionRange);
+			}
+		}
+		this.logEvent(`highlighted: ${highlighted}`)
+		this.logEvent(`code: ${options.code}`)
+
+		prompt = `${prompt} ${highlighted}`
 
     this.questionCounter++;
 
-    this.logEvent("api-request-sent", {
-      "chatgpt.command": options.command,
-      "chatgpt.hasCode": String(!!options.code),
-      "chatgpt.hasPreviousAnswer": String(!!options.previousAnswer),
-    });
+		this.logEvent("api-request-sent", { "chatgpt.command": options.command, "chatgpt.hasCode": String(!!options.code), "chatgpt.hasPreviousAnswer": String(!!options.previousAnswer) });
 
-    this.response = "";
-	// highlight + prompt = prompt 
-    let question = this.processQuestion(prompt, options.code, options.language);
-    const responseInMarkdown = !this.isCodexModel;
+		this.response = '';
+		let question = this.processQuestion(prompt, options.code, options.language);
+		const responseInMarkdown = !this.isCodexModel;
 
     // If the ChatGPT view is not in focus/visible; focus on it to render Q&A
     if (this.webView == null) {
