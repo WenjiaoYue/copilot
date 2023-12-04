@@ -108,10 +108,11 @@
                     existingMessage.innerHTML = 'Welcome to Neural Copilot ~';
                 } else {
                     list.innerHTML +=
-                        ``;
+                    message.value;
                 }
 
                 if (message.done) {
+                    
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
 
                     preCodeList.forEach((preCode) => {

@@ -91,8 +91,7 @@ export function activate(context: vscode.ExtensionContext) {
     const debouncedProvider = {
         provideInlineCompletionItems: debounce(
             async (document: vscode.TextDocument, position: vscode.Position) => {
-                return new ChatGptViewProvider(context).provideInlineCompletionItems(document, position, null, null);
-                // return provider.provideInlineCompletionItems(document, position, null, null);
+                return provider.provideInlineCompletionItems(document, position, null, null);
             },
             1300 // Adjust the delay time as needed
         )

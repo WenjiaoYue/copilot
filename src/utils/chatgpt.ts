@@ -54,7 +54,9 @@ var ChatGPTError = class extends Error {
 async function fetchSSE(url, options, fetch2 = fetch) {
   const { onMessage, ...fetchOptions } = options;
   const res = await fetch2(url, fetchOptions);
+  
   if (!res.ok) {
+
     const reason = await res.text();
     const msg = `ChatGPT error ${res.status || res.statusText}: ${reason}`;
     const error = new ChatGPTError(msg, { cause: reason });
@@ -67,6 +69,7 @@ async function fetchSSE(url, options, fetch2 = fetch) {
       onMessage(event.data);
     }
   });
+
   if (!res.body.getReader) {
     const body = res.body;
     if (!body.on || !body.read) {
@@ -107,7 +110,6 @@ export interface ChatGPTResult {
   text: string;
 }
 export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTSendMessageOptions = {}): Promise<ChatGPTResult> {
-  console.log("chatgptSendMessage", text);
   const {
     conversationId,
     parentMessageId = uuidv4(),
@@ -174,7 +176,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
       query: text,
       translated_query: "Where is the badge office at Zizhu site?"
     };
-    // const body = {"prompt": "def print_hello_world():"}
+    // const body = {prompt: "def print_hello_world():"};
     fetchSSE(
       url,
       {
@@ -206,9 +208,11 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         return reject(err);
       }
     });
-  });
+  });  
 
   if (timeoutMs) {
+    console.log('timeout', timeoutMs);
+    
     if (abortController) {
       responseP.cancel = () => {
         abortController?.abort();
