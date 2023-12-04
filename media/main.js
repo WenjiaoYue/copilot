@@ -91,6 +91,8 @@
             case "addResponse":
                 let existingMessage = message.rawId && document.getElementById(message.id);
                 let updatedValue = "";
+                let currentContent = ""
+
 
                 const unEscapeHtml = (unsafe) => {
                     return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
@@ -107,12 +109,21 @@
                 if (existingMessage) {
                     existingMessage.innerHTML = 'Welcome to Neural Copilot ~';
                 } else {
+                    currentContent += message.value;
                     list.innerHTML +=
-                    message.value;
+                    `<div class="p-4 self-end error-element-ext" data-license="isc-gnc">
+                        <h2 class="mb-5 flex">${aiSvg}Neural Copilot
+                        </h2>
+                        <div class="text-red-400">{${currentContent}}</div>
+                    </div>`;
+
+                if (message.autoScroll) {
+                    list.lastChild?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+                }                    
                 }
 
                 if (message.done) {
-                    
+
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
 
                     preCodeList.forEach((preCode) => {
