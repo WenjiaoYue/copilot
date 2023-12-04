@@ -161,7 +161,9 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     //   "Content-Type": "application/json"
     // };
 
-    const url = "http://10.165.57.68:8000/v1/askdoc/chat";
+    // const url = "http://10.165.57.68:8000/v1/askdoc/chat";
+    const url = "https://talkingphoto.eglb.intel.com";
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     const headers = {
       Accept: "text/event-stream",
       "Content-Type": "application/json"
