@@ -180,7 +180,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         headers,
         body: JSON.stringify(body),
         signal: abortSignal,
-        onMessage: (data) => {
+        onMessage: (data: string) => {
           console.log('data', data);
           
           var _a, _b, _c;
