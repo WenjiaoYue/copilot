@@ -125,21 +125,21 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     abortSignal = abortController.signal;
   }
 
-  const body = {
-    action,
-    messages: [
-      {
-        id: messageId,
-        role: "user",
-        content: {
-          content_type: "text",
-          parts: [text]
-        }
-      }
-    ],
-    model: 'gpt-3.5-turbo',
-    parent_message_id: parentMessageId
-  };
+  // const body = {
+  //   action,
+  //   messages: [
+  //     {
+  //       id: messageId,
+  //       role: "user",
+  //       content: {
+  //         content_type: "text",
+  //         parts: [text]
+  //       }
+  //     }
+  //   ],
+  //   model: 'gpt-3.5-turbo',
+  //   parent_message_id: parentMessageId
+  // };
 
   if (conversationId) {
     body.conversation_id = conversationId;
@@ -154,11 +154,23 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
   };
 
   const responseP = new Promise((resolve, reject) => {
-    const url = "https://api.openai.com/v1/chat/completions";
+    // const url = "https://api.openai.com/v1/chat/completions";
+    // const headers = {
+    //   Authorization: `Bearer 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`,
+    //   Accept: "text/event-stream",
+    //   "Content-Type": "application/json"
+    // };
+
+    const url = "http://10.165.57.68:8000/v1/askdoc/chat";
     const headers = {
-      Authorization: `Bearer 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`,
       Accept: "text/event-stream",
       "Content-Type": "application/json"
+    };
+
+    const body = {
+      domain: "ASK_GM",
+      query: text,
+      translated_query: "Where is the badge office at Zizhu site?"
     };
 
     fetchSSE(
@@ -177,15 +189,15 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
           }
           try {
             const convoResponseEvent = JSON.parse(data);
-            if (convoResponseEvent.conversation_id) {
-              result.conversationId = convoResponseEvent.conversation_id;
-            }
-            if ((_a = convoResponseEvent.message) == null ? void 0 : _a.id) {
-              result.id = convoResponseEvent.message.id;
-            }
-            const message = convoResponseEvent.message;
+            // if (convoResponseEvent.conversation_id) {
+            //   result.conversationId = convoResponseEvent.conversation_id;
+            // }
+            // if ((_a = convoResponseEvent.message) == null ? void 0 : _a.id) {
+            //   result.id = convoResponseEvent.message.id;
+            // }
+            const message = convoResponseEvent;
             if (message) {
-              let text2 = (_c = (_b = message == null ? void 0 : message.content) == null ? void 0 : _b.parts) == null ? void 0 : _c[0];
+              let text2 = message;
               if (text2) {
                 result.text = text2;
                 if (onProgress) {

@@ -10,7 +10,8 @@ export async function fetchTextContent(keyword: string): Promise<string> {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            "prompt": keyword
+            "prompt": keyword,
+            "device": "hpu"
         }),
     });    
     const rs_json = await rs.json();

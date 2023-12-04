@@ -273,8 +273,9 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		this.logEvent(`highlighted: ${highlighted}`);
 		this.logEvent(`code: ${options.code}`);
 
-		prompt = `${prompt} ${highlighted}`;
-
+		// prompt = `${prompt} ${highlighted}`;
+		prompt = `${prompt}`;
+		const final_content = `${prompt} ${highlighted}`;
 		
 
 		this.questionCounter++;
@@ -282,7 +283,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		this.logEvent("api-request-sent", { "chatgpt.command": options.command, "chatgpt.hasCode": String(!!options.code), "chatgpt.hasPreviousAnswer": String(!!options.previousAnswer) });
 
 		this.response = '';
-		let question = this.processQuestion(prompt, options.code, options.language);
+		const question = this.processQuestion(final_content, options.code, options.language);
 		const responseInMarkdown = !this.isCodexModel;
 
 		// If the ChatGPT view is not in focus/visible; focus on it to render Q&A
@@ -327,6 +328,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 				
 			}
 
+			console.log('this.response', this.response);
+			
 			if (options.previousAnswer != null) {
 				this.response = options.previousAnswer + this.response;
 			}
