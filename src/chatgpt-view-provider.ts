@@ -334,10 +334,11 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 				this.response = options.previousAnswer + this.response;
 			}
 
-			const hasContinuation = this.response.split("```").length % 2 === 1;
+			// const hasContinuation = this.response.split("```").length % 2 === 1;
+			const hasContinuation = this.response.length
 
 			if (hasContinuation) {
-				this.response = this.response + " \r\n ```\r\n";
+				// this.response = this.response + " \r\n ```\r\n";
 				vscode.window
 					.showInformationMessage(
 						"It looks like ChatGPT didn't complete their answer for your coding question. You can ask it to continue and combine the answers.",

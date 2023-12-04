@@ -161,8 +161,8 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     //   "Content-Type": "application/json"
     // };
 
-    // const url = "http://10.165.57.68:8000/v1/askdoc/chat";
-    const url = "https://talkingphoto.eglb.intel.com";
+    const url = "http://10.165.57.68:8000/v1/askdoc/chat";
+    // const url = "https://talkingphoto.eglb.intel.com/v1/code_chat";
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     const headers = {
       Accept: "text/event-stream",
@@ -174,7 +174,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
       query: text,
       translated_query: "Where is the badge office at Zizhu site?"
     };
-
+    // const body = {"prompt": "def print_hello_world():"}
     fetchSSE(
       url,
       {
@@ -184,30 +184,16 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         signal: abortSignal,
         onMessage: (data: string) => {
           console.log('data', data);
-          
-          var _a, _b, _c;
           if (data === "[DONE]") {
             return resolve(result);
           }
           try {
-            const convoResponseEvent = JSON.parse(data);
-            // if (convoResponseEvent.conversation_id) {
-            //   result.conversationId = convoResponseEvent.conversation_id;
-            // }
-            // if ((_a = convoResponseEvent.message) == null ? void 0 : _a.id) {
-            //   result.id = convoResponseEvent.message.id;
-            // }
-            const message = convoResponseEvent;
-            if (message) {
-              let text2 = message;
-              if (text2) {
-                result.text = text2;
-                if (onProgress) {
-                  onProgress(result);
-                }
-              }
+            result.text = data;
+            if (onProgress) {
+              onProgress(result);
             }
           } catch (err) {
+            console.log(`err: ${err}`);
           }
         }
       },
