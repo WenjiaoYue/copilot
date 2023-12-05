@@ -4,6 +4,8 @@ import { URLConfig, mode } from "../config";
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 export async function fetchTextContent(keyword: string): Promise<string> {
     // const url = mode.value ? URLConfig.highQuality : URLConfig.***
+    console.log('1');
+    
     const rs = await fetch(URLConfig.highQuality, {
         method: 'POST',
         headers: {
@@ -11,7 +13,7 @@ export async function fetchTextContent(keyword: string): Promise<string> {
         },
         body: JSON.stringify({
             "prompt": keyword,
-            "device": "hpu"
+            "max_new_tokens": 256
         }),
     });    
     const rs_json = await rs.json();
