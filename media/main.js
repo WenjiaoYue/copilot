@@ -106,7 +106,7 @@
                 const markedResponse = marked.parse(updatedValue);
 
                 if (existingMessage) {
-                    existingMessage.innerHTML += updatedValue;
+                    existingMessage.innerHTML +=`<pre><code>`+ updatedValue + `</pre></code>`;
                 } else {
                     list.innerHTML +=
                         `<div data-license="isc-gnc" class="p-4 self-end mt-4 pb-8 answer-element-ext">
@@ -340,6 +340,8 @@
         if (targetButton?.classList?.contains("code-element-ext")) {
             e.preventDefault();
             navigator.clipboard.writeText(targetButton.parentElement?.nextElementSibling?.lastChild?.textContent).then(() => {
+                console.log('targetButton');
+                
                 targetButton.innerHTML = `${checkSvg} Copied`;
 
                 setTimeout(() => {
