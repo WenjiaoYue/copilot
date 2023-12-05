@@ -339,6 +339,7 @@
 
         if (targetButton?.classList?.contains("code-element-ext")) {
             e.preventDefault();
+            
             navigator.clipboard.writeText(targetButton.parentElement?.nextElementSibling?.lastChild?.textContent).then(() => {
                 console.log('targetButton');
                 

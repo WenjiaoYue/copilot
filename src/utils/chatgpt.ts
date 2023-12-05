@@ -163,7 +163,8 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     //   "Content-Type": "application/json"
     // };
 
-    const url = "http://10.165.57.68:8000/v1/askdoc/chat";
+    // const url = "http://10.165.57.68:8000/v1/askdoc/chat";
+    const url = "https://askgm.eglb.intel.com/v1/textchat/chat";
     // const url = "https://talkingphoto.eglb.intel.com/v1/code_chat";
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     const headers = {
@@ -171,10 +172,16 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
       "Content-Type": "application/json"
     };
 
+    // const body = {
+    //   domain: "ASK_GM",
+    //   query: text,
+    //   translated_query: "Where is the badge office at Zizhu site?"
+    // };
     const body = {
-      domain: "ASK_GM",
-      query: text,
-      translated_query: "Where is the badge office at Zizhu site?"
+      "query": "hi",
+      "domain": "test",
+      "stream": true,
+      "max_new_tokens": 256
     };
     // const body = {prompt: "def print_hello_world():"};
     fetchSSE(
