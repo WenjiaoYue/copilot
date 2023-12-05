@@ -32,4 +32,12 @@ export function getConfig() {
     } as IConfig;
 }
 
+export const URLConfig = (() => {
+    const config = vscode.workspace.getConfiguration("neuralCopilot");
+
+    return {
+        "highQuality": config.settings.sites.highQuality as string,
+    };
+})()
+
 export default CSConfig;
