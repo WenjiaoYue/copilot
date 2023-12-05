@@ -92,7 +92,6 @@
                 let existingMessage = document.getElementById(message.id);
                 let updatedValue = "";
 
-                // 
                 const unEscapeHtml = (unsafe) => {
                     return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
                 };
@@ -103,10 +102,17 @@
                     updatedValue = message.value.split("```").length % 2 === 1 ? message.value : message.value + "\n\n```\n\n";
                 }
 
+                let codeElements = document.getElementsByTagName('code');
+                if (codeElements.length) {
+                    let lastCodeBlock = codeElements[codeElements.length - 1];
+                    updatedValue = `<pre><code>${lastCodeBlock.innerHTML}${updatedValue}</code></pre>`;
+                } else {
+                    updatedValue = `<pre><code>${updatedValue}</code></pre>`
+                }
                 const markedResponse = marked.parse(updatedValue);
 
                 if (existingMessage) {
-                    existingMessage.innerHTML +=`<pre><code>`+ updatedValue + `</pre></code>`;
+                    existingMessage.innerHTML = markedResponse;
                 } else {
                     list.innerHTML +=
                         `<div data-license="isc-gnc" class="p-4 self-end mt-4 pb-8 answer-element-ext">
@@ -115,9 +121,8 @@
                     </div>`;
                 }
 
-                if (message.done) {
+                if (!message.done) {
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
-
                     preCodeList.forEach((preCode) => {
                         preCode.classList.add("input-background", "p-4", "pb-2", "block", "whitespace-pre", "overflow-x-scroll");
                         preCode.parentElement.classList.add("pre-code-element", "relative");
@@ -147,9 +152,12 @@
                         buttonWrapper.append(copyButton, insert, newTab);
 
                         if (preCode.parentNode.previousSibling) {
-                            preCode.parentNode.parentElement.insertAfter(buttonWrapper, preCode.parentElement.previousSibling);
+                            console.log("preCode.parentNode.previousSibling");
+                            preCode.parentNode.parentNode.insertAfter(buttonWrapper, preCode.parentNode);
                         } else {
-                            preCode.parentNode.parentElement.append(buttonWrapper);
+                            console.log("not preCode.parentNode.previousSibling");
+                            // preCode.parentNode.parentElement.append(buttonWrapper);
+                            preCode.parentNode.parentNode.insertBefore(buttonWrapper, preCode.parentNode);
                         }
                     });
 
@@ -232,7 +240,7 @@
 
     document.addEventListener("click", (e) => {
         const targetButton = e.target.closest('button');
-		this.logEvent("click");
+		console.log("click");
         if (targetButton?.id === "more-button") {
             e.preventDefault();
             document.getElementById('chat-button-wrapper')?.classList.toggle("hidden");
@@ -338,6 +346,7 @@
         }
 
         if (targetButton?.classList?.contains("code-element-ext")) {
+            console.log("find copy button");
             e.preventDefault();
             
             navigator.clipboard.writeText(targetButton.parentElement?.nextElementSibling?.lastChild?.textContent).then(() => {

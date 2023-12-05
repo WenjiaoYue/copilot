@@ -335,7 +335,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 			}
 
 			// const hasContinuation = this.response.split("```").length % 2 === 1;
-			const hasContinuation = this.response.length;
+			const hasContinuation = !this.response.length;
 
 			if (hasContinuation) {
 				// this.response = this.response + " \r\n ```\r\n";
@@ -355,14 +355,14 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 					});
 			}
 
-			this.sendMessage({
-				type: "addResponse",
-				value: this.response,
-				done: true,
-				id: this.conversationId,
-				autoScroll: this.autoScroll,
-				responseInMarkdown,
-			});
+			// this.sendMessage({
+			// 	type: "addResponse",
+			// 	value: this.response,
+			// 	done: true,
+			// 	id: this.currentMessageId,
+			// 	autoScroll: this.autoScroll,
+			// 	responseInMarkdown,
+			// });
 
 			if (this.subscribeToResponse) {
 				vscode.window
