@@ -54,6 +54,19 @@ _Note: When you make changes, you should refresh that window to apply changes. T
 
 ## 3. How to use
 ### Chat with AI assistant
+You can start a conversation with the AI programming assistant by clicking on the robot icon in the plug-in bar on the left:
+
+![alt text](https://i.imgur.com/P1pB4Rw.png)
+
+Then you can see the conversation window on the left, where you can chat with AI assistant:
+
+![alt text](https://i.imgur.com/M0yqZ1H.png)
+
+There are 3 areas worth noting:
+
+1. Enter and submit your question
+2. Answers from AI assistant (streaming output)
+3. Copy code with one click
 
 ### Code suggestion
 To trigger inline completion, you'll need to type `// {your keyword}` (start with your programming language's comment keyword, like `//` in C++ and `#` in python).
@@ -66,7 +79,9 @@ For example:
 
 Make sure `Inline Suggest` is `enabled` from the VS Code Settings.
 
-You can also select the code in the editor and let the AI coding assistant help you modify the selected code.
+You can also select the code in the editor and let the AI coding assistant help you modify the selected code：
+
+![alt text](https://i.imgur.com/SRs7p8I.png)
 
 ### Switch mode
 Neural Copilot supports both high quality mode and fast mode, and allows you to switch between them with one click according to your needs：
