@@ -54,7 +54,7 @@ _Note: When you make changes, you should refresh that window to apply changes. T
 
 ## 3. How to use
 ### Chat with AI assistant
-You can start a conversation with the AI programming assistant by clicking on the robot icon in the plug-in bar on the left:
+You can start a conversation with the AI programming assistant by clicking on the robot icon in the plugin bar on the left:
 
 ![alt text](https://i.imgur.com/P1pB4Rw.png)
 
