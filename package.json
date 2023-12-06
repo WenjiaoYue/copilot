@@ -4,22 +4,37 @@
 	"description": "Find snippets codes from Neural Copilot",
 	"version": "0.0.1",
 	"publisher": "ITEX",
+	"aiKey": "",
+	"engines": {
+		"vscode": "^1.73.0"
+	},
+	"categories": [
+		"Testing",
+		"Data Science",
+		"Formatters",
+		"Programming Languages",
+		"Linters"
+	],
 	"keywords": [
+		"chatgpt",
 		"code-suggestion",
 		"copilot",
 		"neural-copilot"
-	],
-	"engines": {
-		"vscode": "^1.34.0"
-	},
-	"categories": [
-		"Other"
 	],
 	"activationEvents": [
 		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"menus": {
+			"editor/title": [
+				{
+					"command": "NeuralCopilot.exchangeMode",
+					"when": "true",
+					"group": "navigation"
+				}
+			]
+		},
 		"commands": [
 			{
 				"command": "NeuralCopilot.exchangeMode",
@@ -30,15 +45,6 @@
 				}
 			}
 		],
-		"menus": {
-			"editor/title": [
-				{
-					"command": "NeuralCopilot.exchangeMode",
-					"when": "true",
-					"group": "navigation"
-				}
-			]
-		},
 		"viewsContainers": {
 			"activitybar": [
 				{
@@ -51,8 +57,9 @@
 		"views": {
 			"neural-chat-sideBar": [
 				{
-					"id": "sideBar-home",
-					"name": ""
+					"type": "webview",
+					"id": "vscode-chatgpt.view",
+					"name": "Conversation window"
 				}
 			]
 		},
@@ -60,17 +67,17 @@
 			"title": "NeuralCopilot",
 			"type": "object",
 			"properties": {
-				"neuralCopilot.settings.sites.stackoverflow": {
-					"title": "stackoverflow.com",
-					"description": "Enable searching code in StackOverflow",
-					"type": "boolean",
-					"default": true
+				"neuralCopilot.settings.sites.highQuality": {
+					"title": "High Quality",
+					"description": "High Quality URL",
+					"type": "string",
+					"default": "https://talkingphoto.eglb.intel.com/v1/code_generation"
 				},
-				"neuralCopilot.settings.sites.githubGist": {
-					"title": "gist.github.com",
-					"description": "Enable searching code in Github Gist",
-					"type": "boolean",
-					"default": false
+				"neuralCopilot.settings.sites.fastMode": {
+					"title": "Fast Mode",
+					"description": "Fast Mode URL",
+					"type": "string",
+					"default": "https://talkingphoto.eglb.intel.com/v1/code_generation1"
 				},
 				"neuralCopilot.settings.maxResults": {
 					"type": "integer",
@@ -95,32 +102,59 @@
 		"test": "jest"
 	},
 	"devDependencies": {
+		"@types/glob": "^8.0.0",
+		"@types/isomorphic-fetch": "^0.0.36",
+		"@types/mocha": "^10.0.1",
+		"@types/node": "16.x",
+		"@types/uuid": "^9.0.0",
+		"@types/vscode": "^1.73.0",
+		"@types/vscode-webview": "^1.57.0",
+		"@typescript-eslint/eslint-plugin": "^5.45.0",
+		"@typescript-eslint/parser": "^5.45.0",
+		"@vscode/test-electron": "^2.2.0",
+		"esbuild": "^0.15.18",
+		"eslint": "^8.28.0",
+		"glob": "^8.0.3",
+		"mocha": "^10.1.0",
+		"ts-loader": "^9.4.1",
 		"@types/jest": "^27.4.1",
-		"@types/node": "^14.15.0",
 		"@types/node-fetch": "^2.5.10",
-		"@typescript-eslint/eslint-plugin": "^4.16.0",
-		"@typescript-eslint/parser": "^4.16.0",
 		"bufferutil": "^4.0.3",
-		"esbuild": "^0.12.15",
-		"eslint": "^7.21.0",
 		"jest": "^27.5",
 		"node-loader": "^2.0.0",
 		"ts-jest": "^27.1.4",
-		"ts-loader": "^9.2.3",
-		"typescript": "^4.2.2",
 		"utf-8-validate": "^5.0.5",
 		"vscode-dts": "^0.3.3",
 		"webpack": "^5.76.0",
-		"webpack-cli": "^4.7.2"
+		"webpack-cli": "^4.7.2",
+		"typescript": "^4.9.3"
 	},
 	"dependencies": {
+		"delay": "^5.0.0",
+		"eventsource-parser": "^0.1.0",
+		"gpt3-tokenizer": "^1.1.5",
+		"isomorphic-fetch": "^3.0.0",
+		"keyv": "^4.5.2",
+		"openai": "^3.1.0",
+		"p-timeout": "^6.1.1",
+		"puppeteer": "^19.4.0",
+		"puppeteer-extra": "^3.3.4",
+		"puppeteer-extra-plugin-stealth": "^2.11.1",
+		"puppeteer-extra-plugin-user-data-dir": "^2.4.0",
+		"puppeteer-extra-plugin-user-preferences": "^2.4.0",
+		"quick-lru": "^6.1.1",
+		"remark": "^14.0.2",
+		"strip-markdown": "^5.0.0",
 		"@types/jsdom": "^16.2.12",
 		"jsdom": "^16.6.0",
 		"linkedom": "^0.11.1",
 		"node-fetch": "^2.6.1",
 		"typescript-language-server": "^0.5.4",
 		"vsce": "^2.15.0",
-		"vscode": "^1.1.37"
+		"uuid": "^9.0.0"
+	},
+	"resolutions": {
+		"clone-deep": "^4.0.1"
 	},
 	"jest": {
 		"preset": "ts-jest",

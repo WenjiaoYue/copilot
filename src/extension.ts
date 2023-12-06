@@ -1,10 +1,12 @@
 import * as vscode from 'vscode';
+import ChatGptViewProvider from './chatgpt-view-provider';
+
 
 import { search } from './utils/search';
 import { matchSearchPhrase } from './utils/matchSearchPhrase';
 import { mode } from './config';
 
-function debounce(func: Function, delay: number) {
+function debounce(func: Function, delay: number): any {
     let timeoutId: NodeJS.Timeout;
 
     return (...args: any[]) => {
@@ -19,11 +21,7 @@ function debounce(func: Function, delay: number) {
 
 
 function updateMenuHint(isExchangeMode: boolean) {
-
-    const menuTitle = isExchangeMode ? 'NeuralCopilot: High Quality Mode' : 'NeuralCopilot: Fast Mode';
-    // have icon
-    // const menuTitle = isExchangeMode ? '$(copilot) NeuralCopilot: High Quality Mode' : '$(copilot) NeuralCopilot: Fast Mode';
-
+    const menuTitle = isExchangeMode ? '$(copilot) NeuralCopilot: High Quality Mode' : '$(copilot) NeuralCopilot: Fast Mode';
     vscode.commands.executeCommand('setContext', 'exchangeModeActive', isExchangeMode);
     vscode.window.setStatusBarMessage(menuTitle);
 }
@@ -31,24 +29,35 @@ function updateMenuHint(isExchangeMode: boolean) {
 
 export function activate(context: vscode.ExtensionContext) {
 
-    const disposable = vscode.commands.registerCommand('NeuralCopilot.exchangeMode', () => { 
-        mode.value = !mode.value;    
+
+    const view = vscode.window.registerWebviewViewProvider(
+        "vscode-chatgpt.view",
+        new ChatGptViewProvider(context),
+        {
+            webviewOptions: {
+                retainContextWhenHidden: true,
+            },
+        }
+    );
+
+    const disposable = vscode.commands.registerCommand('NeuralCopilot.exchangeMode', () => {
+        mode.value = !mode.value;
         const showInfoMsg = mode.value ? 'High Quality Mode Activated!' : 'Fast Mode Activated!';
         vscode.window.showInformationMessage(showInfoMsg);
-        updateMenuHint( mode.value);
+        updateMenuHint(mode.value);
     });
 
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(view, disposable);
 
     const provider: vscode.CompletionItemProvider = {
-        provideInlineCompletionItems: async (document, position, context, token) => {
+        provideInlineCompletionItems: async (document: any, position: any, context: any, token: any) => {
             const textBeforeCursor = document.getText(
                 new vscode.Range(position.with(undefined, 0), position)
             );
-    
+
             const match = matchSearchPhrase(textBeforeCursor);
             let items: any[] = [];
-    
+
             if (match) {
                 let rs;
                 try {
@@ -56,6 +65,8 @@ export function activate(context: vscode.ExtensionContext) {
                     if (rs) {
                         items = rs.results.map(item => {
                             // const output = `\n${match.commentSyntax} Source: ${item.sourceURL} ${match.commentSyntaxEnd}\n${item.code}`;
+                            console.log('item', item.code);
+
                             const output = `\n${item.code}`;
                             return {
                                 text: output,
@@ -68,12 +79,12 @@ export function activate(context: vscode.ExtensionContext) {
                     vscode.window.showErrorMessage(err.toString());
                 }
             }
-    
+
             return { items };
         }
     };
-    
-    const debouncedProvider = {
+
+    const debouncedProvider: any = {
         provideInlineCompletionItems: debounce(
             async (document: vscode.TextDocument, position: vscode.Position) => {
                 return provider.provideInlineCompletionItems(document, position, null, null);
@@ -81,6 +92,6 @@ export function activate(context: vscode.ExtensionContext) {
             1300 // Adjust the delay time as needed
         )
     };
-    
+
     vscode.languages.registerInlineCompletionItemProvider({ pattern: "**" }, debouncedProvider);
 }
