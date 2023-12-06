@@ -35,8 +35,7 @@ interface Body {
 
 
 // src / types.ts
-var ChatGPTError = class extends Error {
-};
+var ChatGPTError = class extends Error { };
 
 // src/fetch-sse.ts
 async function fetchSSE(url: string, options: Options, fetch2 = fetch) {
@@ -47,7 +46,7 @@ async function fetchSSE(url: string, options: Options, fetch2 = fetch) {
 
     const reason = await res.text();
     const msg = `Neural Copilot error ${res.status || res.statusText}: ${reason}`;
-    const error: any = new ChatGPTError(msg, { cause: reason });
+    const error: any = new ChatGPTError(msg);
     error.statusCode = res.status;
     error.statusText = res.statusText;
     throw error;
@@ -98,7 +97,7 @@ export interface ChatGPTResult {
 }
 
 
-export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTSendMessageOptions = {}): Promise<ChatGPTResult> {
+export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTSendMessageOptions = {}): Promise<ChatGPTResult | any> {
   const {
     conversationId,
     parentMessageId = uuidv4(),
@@ -196,11 +195,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         abortController?.abort();
       };
     }
-
-    import('p-timeout').then((pTimeout) => {
-      return pTimeout(responseP, timeoutMs, "ChatGPT timed out waiting for response");
-    }).catch((error) => {
-    });
+    return pTimeout(responseP, timeoutMs, "ChatGPT timed out waiting for response");
   } else {
     return responseP;
   }
