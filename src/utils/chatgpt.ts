@@ -117,15 +117,6 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     abortSignal = abortController.signal;
   }
 
-  // const url = "https://api.openai.com/v1/chat/completions";
-  // const headers = {
-  //   Authorization: `Bearer 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`,
-  //   Accept: "text/event-stream",
-  //   "Content-Type": "application/json"
-  // };
-
-  // const url = "http://10.165.57.68:8000/v1/askdoc/chat";
-  // const url = "https://askgm.eglb.intel.com/v1/textchat/chat";
   const url = "https://talkingphoto.eglb.intel.com/v1/code_chat";
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
   const headers = {
@@ -133,17 +124,11 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     "Content-Type": "application/json"
   };
 
-  // const body: Body = {
-  //   domain: "ASK_GM",
-  //   query: text,
-  //   translated_query: "Where is the badge office at Zizhu site?"
-  // };
   const body: Body = {
     "prompt": text,
     "stream": true,
     "max_new_tokens": 256
   };
-  // const body = {prompt: "def print_hello_world():"};
 
   if (conversationId) {
     body.conversation_id = conversationId;
