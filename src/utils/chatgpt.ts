@@ -4,6 +4,7 @@ import { createParser } from "eventsource-parser";
 import fetch from "node-fetch";
 
 
+
 async function* streamAsyncIterable(stream) {
   const reader = stream.getReader();
   try {
@@ -152,6 +153,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     text: ""
   };
 
+
   const responseP: any = new Promise((resolve, reject) => {
     fetchSSE(
       url,
@@ -161,12 +163,12 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         body: JSON.stringify(body),
         signal: abortSignal,
         onMessage: (data: string) => {
-          console.log('data', data);
+          console.log('data',  data.startsWith("b") ? data.slice(2, -1): data );
           if (data === "[DONE]") {
             return resolve(result);
           }
           try {
-            result.text = data;
+            result.text = data.startsWith("b") ? data.slice(2, -1): data;
             if (onProgress) {
               onProgress(result);
             }

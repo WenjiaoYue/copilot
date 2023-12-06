@@ -99,7 +99,7 @@
                 if (!message.responseInMarkdown) {
                     updatedValue = "```\r\n" + unEscapeHtml(message.value) + " \r\n ```";
                 } else {
-                    updatedValue = message.value;
+                    updatedValue = message.value.replace(/\\r\\n/g, '\n');
                 }
 
                 let codeElements = document.getElementsByTagName('code');
@@ -124,7 +124,7 @@
                 if (!message.done) {
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
                     preCodeList.forEach((preCode) => {
-                        preCode.classList.add("input-background", "p-4", "pb-2", "block", "whitespace-pre", "overflow-x-scroll");
+                        preCode.classList.add("input-background", "p-4", "pb-2", "block", "whitespace-pre-wrap", "overflow-x-scroll");
                         preCode.parentElement.classList.add("pre-code-element", "relative");
 
                         const buttonWrapper = document.createElement("no-export");
