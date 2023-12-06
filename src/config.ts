@@ -37,7 +37,8 @@ export const URLConfig = (() => {
 
     return {
         "highQuality": config.settings.sites.highQuality as string,
+        "fastMode": config.settings.sites.fastMode as string,
     };
-})()
+})();
 
 export default CSConfig;

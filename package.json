@@ -73,11 +73,11 @@
 					"type": "string",
 					"default": "https://talkingphoto.eglb.intel.com/v1/code_generation"
 				},
-				"neuralCopilot.settings.sites.githubGist": {
-					"title": "gist.github.com",
-					"description": "Enable searching code in Github Gist",
-					"type": "boolean",
-					"default": false
+				"neuralCopilot.settings.sites.fastMode": {
+					"title": "Fast Mode",
+					"description": "Fast Mode URL",
+					"type": "string",
+					"default": "https://talkingphoto.eglb.intel.com/v1/code_generation1"
 				},
 				"neuralCopilot.settings.maxResults": {
 					"type": "integer",

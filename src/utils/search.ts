@@ -1,10 +1,7 @@
-import SnippetExtractors from "./extractors";
 import { SnippetResult } from "./extractors/ExtractorAbstract";
 
-import { FetchPageResult, fetchPageTextContent } from "./fetchPageContent";
 
 import * as vscode from 'vscode';
-import { getConfig, mode } from "../config";
 import { fetchTextContent } from "./fetchContent";
 
 /**
@@ -22,53 +19,23 @@ export async function search(keyword: string): Promise<null | { results: Snippet
         return Promise.resolve({ results: cachedResults[keyword] });
     }
 
-    const config = getConfig();
 
     /* eslint "no-async-promise-executor": "off" */
     const promise = new Promise<{ results: SnippetResult[] }>(async (resolve, reject) => {
 
         let results: SnippetResult[] = [];
-        let fetchResult: FetchPageResult;
 
         try {
-            if (mode.value) {
-                // back_end api
-                const result = await fetchTextContent(keyword);
+            // back_end api
+            const result = await fetchTextContent(keyword);
 
-                results.push({
-                    votes: 1,
-                    code: result,
-                    hasCheckMark: true,
-                    sourceURL: ''
-                });
-            } else {
-                for (const i in SnippetExtractors) {
-                    const extractor = SnippetExtractors[i];
+            results.push({
+                votes: 1,
+                code: result,
+                hasCheckMark: true,
+                sourceURL: ''
+            });
 
-                    if (extractor.isEnabled()) {
-                        const urls = await extractor.extractURLFromKeyword(keyword);
-
-                        for (const y in urls) {
-                            console.log('urls', urls);
-                            
-                            fetchResult = await fetchPageTextContent(urls[y]);
-                            results = results.concat(extractor.extractSnippets(fetchResult));
-                            console.log('results', results);
-                            
-                            vscode.window.setStatusBarMessage(`NeuralCopilot: ${extractor.name} (${y}/${urls.length}): ${results.length} results`, 2000);
-
-                            if (results.length >= config.settings.maxResults) {
-                                break;
-                            }
-                        }
-
-                        if (results.length >= config.settings.maxResults) {
-                            break;
-                        }
-                    }
-                }
-
-            }
 
             cachedResults[keyword] = results;
 
