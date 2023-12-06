@@ -5,7 +5,8 @@ import fetch from "node-fetch";
 
 
 
-async function* streamAsyncIterable(stream) {
+
+async function* streamAsyncIterable(stream: any) {
   const reader = stream.getReader();
   try {
     while (true) {
@@ -20,20 +21,34 @@ async function* streamAsyncIterable(stream) {
   }
 }
 
+interface Options extends RequestInit {
+  onMessage: Function;
+}
+
+interface Body {
+  prompt: string;
+  stream?: boolean;
+  max_new_tokens?: number;
+  conversation_id?: string;
+  domain?: string;
+  query?: string;
+  translated_query?: string;
+}
+
+
 // src / types.ts
-var ChatGPTError = class extends Error {
-};
+var ChatGPTError = class extends Error { };
 
 // src/fetch-sse.ts
-async function fetchSSE(url: string, options: object, fetch2 = fetch) {
+async function fetchSSE(url: string, options: Options, fetch2 = fetch) {
   const { onMessage, ...fetchOptions } = options;
-  const res = await fetch2(url, fetchOptions);
+  const res: Response | any = await fetch2(url, fetchOptions);
 
   if (!res.ok) {
 
     const reason = await res.text();
     const msg = `Neural Copilot error ${res.status || res.statusText}: ${reason}`;
-    const error = new ChatGPTError(msg, { cause: reason });
+    const error: any = new ChatGPTError(msg);
     error.statusCode = res.status;
     error.statusText = res.statusText;
     throw error;
@@ -72,7 +87,7 @@ export interface ChatGPTSendMessageOptions {
   timeoutMs?: number;
   onProgress?: (result: ChatGPTResult) => void;
   abortSignal?: AbortSignal;
-  promptPrefix?:string;
+  promptPrefix?: string;
 }
 
 export interface ChatGPTResult {
@@ -84,18 +99,7 @@ export interface ChatGPTResult {
 }
 
 
-interface Body {
-  prompt?: string;
-  stream?: boolean;
-  max_new_tokens?: number;
-  conversation_id?: string;
-  domain?: string;
-  query?: string;
-  translated_query?: string;
-}
-
-
-export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTSendMessageOptions = {}): Promise<ChatGPTResult> {
+export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTSendMessageOptions = {}): Promise<ChatGPTResult | any> {
   const {
     conversationId,
     parentMessageId = uuidv4(),
@@ -194,11 +198,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         abortController?.abort();
       };
     }
-
-    import('p-timeout').then((pTimeout) => {
-      return pTimeout(responseP, timeoutMs, "ChatGPT timed out waiting for response");
-    }).catch((error) => {
-    });
+    // return pTimeout(responseP, timeoutMs, "ChatGPT timed out waiting for response");
   } else {
     return responseP;
   }
