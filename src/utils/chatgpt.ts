@@ -58,7 +58,7 @@ async function fetchSSE(url, options, fetch2 = fetch) {
   if (!res.ok) {
 
     const reason = await res.text();
-    const msg = `ChatGPT error ${res.status || res.statusText}: ${reason}`;
+    const msg = `Neural Copilot error ${res.status || res.statusText}: ${reason}`;
     const error = new ChatGPTError(msg, { cause: reason });
     error.statusCode = res.status;
     error.statusText = res.statusText;

@@ -150,14 +150,14 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		this.inProgress = false;
 		this.sendMessage({ type: "showInProgress", inProgress: this.inProgress });
 		const responseInMarkdown = !this.isCodexModel;
-		this.sendMessage({
-			type: "addResponse",
-			value: this.response,
-			done: true,
-			id: this.currentMessageId,
-			autoScroll: this.autoScroll,
-			responseInMarkdown,
-		});
+		// this.sendMessage({
+		// 	type: "addResponse",
+		// 	value: `Welcome to Neural Copilot`,
+		// 	done: true,
+		// 	id: this.currentMessageId,
+		// 	autoScroll: this.autoScroll,
+		// 	responseInMarkdown,
+		// });
 		this.logEvent("stopped-generating");
 	}
 
@@ -175,6 +175,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	public setMethod(): void {
+		console.log('loginMethod');
+		
 		this.loginMethod = vscode.workspace
 			.getConfiguration("chatgpt")
 			.get("method") as LoginMethod;
@@ -185,6 +187,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 	}
 
 	public setAuthType(): void {
+		console.log('authType');
+
 		this.authType = vscode.workspace
 			.getConfiguration("chatgpt")
 			.get("authenticationType");
@@ -276,8 +280,6 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
 		this.questionCounter++;
 
-		this.logEvent("api-request-sent", { "chatgpt.command": options.command, "chatgpt.hasCode": String(!!options.code), "chatgpt.hasPreviousAnswer": String(!!options.previousAnswer) });
-
 		this.response = '';
 		const question = this.processQuestion(final_content, options.code, options.language);
 		const responseInMarkdown = !this.isCodexModel;
@@ -324,7 +326,6 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 				
 			}
 
-			console.log('this.response', this.response);
 			
 			if (options.previousAnswer != null) {
 				this.response = options.previousAnswer + this.response;
