@@ -15,9 +15,9 @@ Table of contents:
   - [1. Install extension from the marketplacet](#1-install-extension-from-the-marketplacet)
   - [2. Installation for Development](#2-installation-for-development)
   - [3. How to use](#3-how-to-use)
-    - [Chat with AI assistant](#chat-with-ai-assistant)
-    - [Code suggestion](#code-suggestion)
     - [Switch mode](#switch-mode)
+    - [Code suggestion](#code-suggestion)
+    - [Chat with AI assistant](#chat-with-ai-assistant)
 
 ---
 ## 1. Install extension from the marketplacet
