@@ -576,9 +576,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 							<div class="bounce2"></div>
 							<div class="bounce3"></div>
 						</div>
-
-						<button id="stop-button" class="btn btn-primary flex items-end p-1 pr-2 rounded-md ml-5">
-							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>Stop responding</button>
+						<button id="stop-button" class="btn btn-primary flex items-end ">
+							</button>
 					</div>
 
 					<div class="p-4 flex items-center pt-2" data-license="isc-gnc">

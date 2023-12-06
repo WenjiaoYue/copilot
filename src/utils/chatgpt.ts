@@ -4,7 +4,9 @@ import { createParser } from "eventsource-parser";
 import fetch from "node-fetch";
 
 
-async function* streamAsyncIterable(stream) {
+
+
+async function* streamAsyncIterable(stream: any) {
   const reader = stream.getReader();
   try {
     while (true) {
@@ -19,20 +21,34 @@ async function* streamAsyncIterable(stream) {
   }
 }
 
+interface Options extends RequestInit {
+  onMessage: Function;
+}
+
+interface Body {
+  prompt: string;
+  stream?: boolean;
+  max_new_tokens?: number;
+  conversation_id?: string;
+  domain?: string;
+  query?: string;
+  translated_query?: string;
+}
+
+
 // src / types.ts
-var ChatGPTError = class extends Error {
-};
+var ChatGPTError = class extends Error { };
 
 // src/fetch-sse.ts
-async function fetchSSE(url: string, options: object, fetch2 = fetch) {
+async function fetchSSE(url: string, options: Options, fetch2 = fetch) {
   const { onMessage, ...fetchOptions } = options;
-  const res = await fetch2(url, fetchOptions);
+  const res: Response | any = await fetch2(url, fetchOptions);
 
   if (!res.ok) {
 
     const reason = await res.text();
     const msg = `Neural Copilot error ${res.status || res.statusText}: ${reason}`;
-    const error = new ChatGPTError(msg, { cause: reason });
+    const error: any = new ChatGPTError(msg);
     error.statusCode = res.status;
     error.statusText = res.statusText;
     throw error;
@@ -71,7 +87,7 @@ export interface ChatGPTSendMessageOptions {
   timeoutMs?: number;
   onProgress?: (result: ChatGPTResult) => void;
   abortSignal?: AbortSignal;
-  promptPrefix?:string;
+  promptPrefix?: string;
 }
 
 export interface ChatGPTResult {
@@ -83,18 +99,7 @@ export interface ChatGPTResult {
 }
 
 
-interface Body {
-  prompt?: string;
-  stream?: boolean;
-  max_new_tokens?: number;
-  conversation_id?: string;
-  domain?: string;
-  query?: string;
-  translated_query?: string;
-}
-
-
-export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTSendMessageOptions = {}): Promise<ChatGPTResult> {
+export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTSendMessageOptions = {}): Promise<ChatGPTResult | any> {
   const {
     conversationId,
     parentMessageId = uuidv4(),
@@ -112,15 +117,6 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     abortSignal = abortController.signal;
   }
 
-  // const url = "https://api.openai.com/v1/chat/completions";
-  // const headers = {
-  //   Authorization: `Bearer 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`,
-  //   Accept: "text/event-stream",
-  //   "Content-Type": "application/json"
-  // };
-
-  // const url = "http://10.165.57.68:8000/v1/askdoc/chat";
-  // const url = "https://askgm.eglb.intel.com/v1/textchat/chat";
   const url = "https://talkingphoto.eglb.intel.com/v1/code_chat";
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
   const headers = {
@@ -128,17 +124,11 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     "Content-Type": "application/json"
   };
 
-  // const body: Body = {
-  //   domain: "ASK_GM",
-  //   query: text,
-  //   translated_query: "Where is the badge office at Zizhu site?"
-  // };
   const body: Body = {
     "prompt": text,
     "stream": true,
     "max_new_tokens": 256
   };
-  // const body = {prompt: "def print_hello_world():"};
 
   if (conversationId) {
     body.conversation_id = conversationId;
@@ -152,6 +142,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     text: ""
   };
 
+
   const responseP: any = new Promise((resolve, reject) => {
     fetchSSE(
       url,
@@ -161,12 +152,12 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         body: JSON.stringify(body),
         signal: abortSignal,
         onMessage: (data: string) => {
-          console.log('data', data);
+          console.log('data',  data.startsWith("b") ? data.slice(2, -1): data );
           if (data === "[DONE]") {
             return resolve(result);
           }
           try {
-            result.text = data;
+            result.text = data.startsWith("b") ? data.slice(2, -1): data;
             if (onProgress) {
               onProgress(result);
             }
@@ -192,11 +183,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         abortController?.abort();
       };
     }
-
-    import('p-timeout').then((pTimeout) => {
-      return pTimeout(responseP, timeoutMs, "ChatGPT timed out waiting for response");
-    }).catch((error) => {
-    });
+    // return pTimeout(responseP, timeoutMs, "ChatGPT timed out waiting for response");
   } else {
     return responseP;
   }

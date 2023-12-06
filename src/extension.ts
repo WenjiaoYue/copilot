@@ -49,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(view, disposable);
 
-    const provider: vscode.CompletionItemProvider = {
+    const provider: vscode.CompletionItemProvider | any = {
         provideInlineCompletionItems: async (document: any, position: any, context: any, token: any) => {
             const textBeforeCursor = document.getText(
                 new vscode.Range(position.with(undefined, 0), position)

@@ -91,6 +91,8 @@
             case "addResponse":
                 let existingMessage = document.getElementById(message.id);
                 let updatedValue = "";
+                let isPythonBlock = false;
+
 
                 const unEscapeHtml = (unsafe) => {
                     return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
@@ -99,11 +101,17 @@
                 if (!message.responseInMarkdown) {
                     updatedValue = "```\r\n" + unEscapeHtml(message.value) + " \r\n ```";
                 } else {
-                    updatedValue = message.value;
+                    updatedValue = message.value.replace(/\\r\\n/g, '\n');
+                    console.log('updateValue', updatedValue);
+                    if (updatedValue.match(/```([a-zA-Z]+)/g)) {
+                        isPythonBlock = !isPythonBlock;
+                    }
                 }
 
+
                 let codeElements = document.getElementsByTagName('code');
-                if (codeElements.length) {
+
+                if (codeElements.length && existingMessage) {
                     let lastCodeBlock = codeElements[codeElements.length - 1];
                     updatedValue = `<pre><code>${lastCodeBlock.innerHTML}${updatedValue}</code></pre>`;
                 } else {
@@ -124,7 +132,7 @@
                 if (!message.done) {
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
                     preCodeList.forEach((preCode) => {
-                        preCode.classList.add("input-background", "p-4", "pb-2", "block", "whitespace-pre", "overflow-x-scroll");
+                        preCode.classList.add("input-background", "p-4", "pb-2", "block", "whitespace-pre-wrap", "overflow-x-scroll");
                         preCode.parentElement.classList.add("pre-code-element", "relative");
 
                         const buttonWrapper = document.createElement("no-export");
