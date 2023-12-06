@@ -103,7 +103,8 @@
                 }
 
                 let codeElements = document.getElementsByTagName('code');
-                if (codeElements.length) {
+
+                if (codeElements.length && existingMessage) {
                     let lastCodeBlock = codeElements[codeElements.length - 1];
                     updatedValue = `<pre><code class="whitespace-pre-line">${lastCodeBlock.innerHTML}${updatedValue}</code></pre>`;
                 } else {
