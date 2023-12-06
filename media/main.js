@@ -99,7 +99,7 @@
                 if (!message.responseInMarkdown) {
                     updatedValue = "```\r\n" + unEscapeHtml(message.value) + " \r\n ```";
                 } else {
-                    updatedValue = message.value.split("```").length % 2 === 1 ? message.value : message.value + "\n\n```\n\n";
+                    updatedValue = message.value;
                 }
 
                 let codeElements = document.getElementsByTagName('code');

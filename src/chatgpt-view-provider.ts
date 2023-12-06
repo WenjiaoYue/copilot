@@ -20,8 +20,6 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 	public profilePath?: string;
 	public model?: string;
 
-	private apiGpt3?: ChatGPTAPI3;
-	private apiGpt35?: "ChatGPTAPI35";
 	private conversationId?: string;
 	private messageId?: string;
 	private proxyServer?: string;
@@ -108,7 +106,6 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 					this.logEvent("browser-cleared");
 					break;
 				case "cleargpt3":
-					this.apiGpt3 = undefined;
 
 					this.logEvent("gpt3-cleared");
 					break;
@@ -166,7 +163,6 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
 	public clearSession(): void {
 		this.stopGenerating();
-		this.apiGpt3 = undefined;
 		this.messageId = undefined;
 		this.conversationId = undefined;
 		this.logEvent("cleared-session");
