@@ -195,7 +195,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         abortController?.abort();
       };
     }
-    return pTimeout(responseP, timeoutMs, "ChatGPT timed out waiting for response");
+    // return pTimeout(responseP, timeoutMs, "ChatGPT timed out waiting for response");
   } else {
     return responseP;
   }

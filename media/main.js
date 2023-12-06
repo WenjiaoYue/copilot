@@ -105,9 +105,9 @@
                 let codeElements = document.getElementsByTagName('code');
                 if (codeElements.length) {
                     let lastCodeBlock = codeElements[codeElements.length - 1];
-                    updatedValue = `<pre><code>${lastCodeBlock.innerHTML}${updatedValue}</code></pre>`;
+                    updatedValue = `<pre><code class="whitespace-pre-line">${lastCodeBlock.innerHTML}${updatedValue}</code></pre>`;
                 } else {
-                    updatedValue = `<pre><code>${updatedValue}</code></pre>`;
+                    updatedValue = `<pre><code class="whitespace-pre-line">${updatedValue}</code></pre>`;
                 }
                 const markedResponse = marked.parse(updatedValue);
 
