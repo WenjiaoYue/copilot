@@ -77,7 +77,7 @@
 					"title": "Fast Mode",
 					"description": "Fast Mode URL",
 					"type": "string",
-					"default": "https://talkingphoto.eglb.intel.com/v1/code_generation1"
+					"default": "XXX"
 				},
 				"neuralCopilot.settings.maxResults": {
 					"type": "integer",
