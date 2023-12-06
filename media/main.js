@@ -91,6 +91,8 @@
             case "addResponse":
                 let existingMessage = document.getElementById(message.id);
                 let updatedValue = "";
+                let isPythonBlock = false;
+
 
                 const unEscapeHtml = (unsafe) => {
                     return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
@@ -100,15 +102,20 @@
                     updatedValue = "```\r\n" + unEscapeHtml(message.value) + " \r\n ```";
                 } else {
                     updatedValue = message.value.replace(/\\r\\n/g, '\n');
+                    console.log('updateValue', updatedValue);
+                    if (updatedValue.match(/```([a-zA-Z]+)/g)) {
+                        isPythonBlock = !isPythonBlock;
+                    }
                 }
+
 
                 let codeElements = document.getElementsByTagName('code');
 
                 if (codeElements.length && existingMessage) {
                     let lastCodeBlock = codeElements[codeElements.length - 1];
-                    updatedValue = `<pre><code class="whitespace-pre-line">${lastCodeBlock.innerHTML}${updatedValue}</code></pre>`;
+                    updatedValue = `<pre><code>${lastCodeBlock.innerHTML}${updatedValue}</code></pre>`;
                 } else {
-                    updatedValue = `<pre><code class="whitespace-pre-line">${updatedValue}</code></pre>`;
+                    updatedValue = `<pre><code>${updatedValue}</code></pre>`;
                 }
                 const markedResponse = marked.parse(updatedValue);
 
