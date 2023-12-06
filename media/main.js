@@ -116,7 +116,7 @@
                 } else {
                     list.innerHTML +=
                         `<div data-license="isc-gnc" class="p-4 self-end mt-4 pb-8 answer-element-ext">
-                        <h2 class="mb-5 flex">${aiSvg}ChatGPT</h2>
+                        <h2 class="mb-5 flex">${aiSvg}Neural Copilot</h2>
                         <div class="result-streaming" id="${message.id}">${markedResponse}</div>
                     </div>`;
                 }
@@ -149,7 +149,7 @@
 
                         newTab.classList.add("new-code-element-ext", "p-1", "pr-2", "flex", "items-center", "rounded-lg");
 
-                        buttonWrapper.append(copyButton, insert, newTab);
+                        buttonWrapper.append(copyButton);
 
                         if (preCode.parentNode.previousSibling) {
                             console.log("preCode.parentNode.previousSibling");
@@ -190,7 +190,7 @@
             case "exportConversation":
                 exportConversation();
                 break;
-           
+
             default:
                 break;
         }
@@ -240,7 +240,7 @@
 
     document.addEventListener("click", (e) => {
         const targetButton = e.target.closest('button');
-		console.log("click");
+        console.log("click");
         if (targetButton?.id === "more-button") {
             e.preventDefault();
             document.getElementById('chat-button-wrapper')?.classList.toggle("hidden");
@@ -276,7 +276,7 @@
 
         if (targetButton?.id === "ask-button") {
             this.logEvent("ask-button");
-            
+
             // e.preventDefault();
             // addFreeTextQuestion();
             return;
@@ -348,10 +348,10 @@
         if (targetButton?.classList?.contains("code-element-ext")) {
             console.log("find copy button");
             e.preventDefault();
-            
+
             navigator.clipboard.writeText(targetButton.parentElement?.nextElementSibling?.lastChild?.textContent).then(() => {
                 console.log('targetButton');
-                
+
                 targetButton.innerHTML = `${checkSvg} Copied`;
 
                 setTimeout(() => {
