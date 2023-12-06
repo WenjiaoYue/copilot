@@ -1,30 +1,3 @@
-// Adapted from https://github.com/transitive-bullshit/chatgpt-api
-
-/**
- * 
- * MIT License
-
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
- */
-
-// src/chatgpt-api.ts
 import pTimeout from "p-timeout";
 import { v4 as uuidv4 } from "uuid";
 import { createParser } from "eventsource-parser";
@@ -51,10 +24,10 @@ var ChatGPTError = class extends Error {
 };
 
 // src/fetch-sse.ts
-async function fetchSSE(url, options, fetch2 = fetch) {
+async function fetchSSE(url: string, options: object, fetch2 = fetch) {
   const { onMessage, ...fetchOptions } = options;
   const res = await fetch2(url, fetchOptions);
-  
+
   if (!res.ok) {
 
     const reason = await res.text();
@@ -90,8 +63,6 @@ async function fetchSSE(url, options, fetch2 = fetch) {
 }
 
 
-
-
 export interface ChatGPTSendMessageOptions {
   conversationId?: string;
   parentMessageId?: string;
@@ -100,6 +71,7 @@ export interface ChatGPTSendMessageOptions {
   timeoutMs?: number;
   onProgress?: (result: ChatGPTResult) => void;
   abortSignal?: AbortSignal;
+  promptPrefix?:string;
 }
 
 export interface ChatGPTResult {
@@ -109,6 +81,19 @@ export interface ChatGPTResult {
   conversationId?: string;
   text: string;
 }
+
+
+interface Body {
+  prompt?: string;
+  stream?: boolean;
+  max_new_tokens?: number;
+  conversation_id?: string;
+  domain?: string;
+  query?: string;
+  translated_query?: string;
+}
+
+
 export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTSendMessageOptions = {}): Promise<ChatGPTResult> {
   const {
     conversationId,
@@ -127,21 +112,33 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     abortSignal = abortController.signal;
   }
 
-  // const body = {
-  //   action,
-  //   messages: [
-  //     {
-  //       id: messageId,
-  //       role: "user",
-  //       content: {
-  //         content_type: "text",
-  //         parts: [text]
-  //       }
-  //     }
-  //   ],
-  //   model: 'gpt-3.5-turbo',
-  //   parent_message_id: parentMessageId
+  // const url = "https://api.openai.com/v1/chat/completions";
+  // const headers = {
+  //   Authorization: `Bearer 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`,
+  //   Accept: "text/event-stream",
+  //   "Content-Type": "application/json"
   // };
+
+  // const url = "http://10.165.57.68:8000/v1/askdoc/chat";
+  // const url = "https://askgm.eglb.intel.com/v1/textchat/chat";
+  const url = "https://talkingphoto.eglb.intel.com/v1/code_chat";
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+  const headers = {
+    Accept: "text/event-stream",
+    "Content-Type": "application/json"
+  };
+
+  // const body: Body = {
+  //   domain: "ASK_GM",
+  //   query: text,
+  //   translated_query: "Where is the badge office at Zizhu site?"
+  // };
+  const body: Body = {
+    "prompt": text,
+    "stream": true,
+    "max_new_tokens": 256
+  };
+  // const body = {prompt: "def print_hello_world():"};
 
   if (conversationId) {
     body.conversation_id = conversationId;
@@ -155,34 +152,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     text: ""
   };
 
-  const responseP = new Promise((resolve, reject) => {
-    // const url = "https://api.openai.com/v1/chat/completions";
-    // const headers = {
-    //   Authorization: `Bearer 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`,
-    //   Accept: "text/event-stream",
-    //   "Content-Type": "application/json"
-    // };
-
-    // const url = "http://10.165.57.68:8000/v1/askdoc/chat";
-    // const url = "https://askgm.eglb.intel.com/v1/textchat/chat";
-    const url = "https://talkingphoto.eglb.intel.com/v1/code_chat";
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    const headers = {
-      Accept: "text/event-stream",
-      "Content-Type": "application/json"
-    };
-
-    // const body = {
-    //   domain: "ASK_GM",
-    //   query: text,
-    //   translated_query: "Where is the badge office at Zizhu site?"
-    // };
-    const body = {
-      "prompt": text,
-      "stream": true,
-      "max_new_tokens": 256
-    };
-    // const body = {prompt: "def print_hello_world():"};
+  const responseP: any = new Promise((resolve, reject) => {
     fetchSSE(
       url,
       {
@@ -214,11 +184,9 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         return reject(err);
       }
     });
-  });  
+  });
 
   if (timeoutMs) {
-    console.log('timeout', timeoutMs);
-    
     if (abortController) {
       responseP.cancel = () => {
         abortController?.abort();
@@ -233,4 +201,3 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     return responseP;
   }
 }
-//# sourceMappingURL=index.js.map
