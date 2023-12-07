@@ -13,7 +13,7 @@ export async function fetchTextContent(keyword: string): Promise<string> {
         },
         body: JSON.stringify({
             "prompt": keyword,
-            "max_new_tokens": 256
+            "max_new_tokens": 512
         }),
     });    
     const rs_json = await rs.json();
