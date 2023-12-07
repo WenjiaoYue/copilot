@@ -586,7 +586,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 								type="text"
 								rows="1" data-license="isc-gnc"
 								id="question-input"
-								placeholder="Ask a question..."
+								placeholder="Ask ..."
 								onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
 						</div>
 						

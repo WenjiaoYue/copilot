@@ -132,7 +132,7 @@
                 if (!message.done) {
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
                     preCodeList.forEach((preCode) => {
-                        preCode.classList.add("input-background", "p-4", "pb-2", "block", "whitespace-pre-wrap", "overflow-x-scroll");
+                        preCode.classList.add("input-background", "p-4", "pb-2", "pt-0", "text-xs", "block", "whitespace-pre-wrap", "overflow-x-scroll");
                         preCode.parentElement.classList.add("pre-code-element", "relative");
 
                         const buttonWrapper = document.createElement("no-export");
