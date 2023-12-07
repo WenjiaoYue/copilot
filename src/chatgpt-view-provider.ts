@@ -42,9 +42,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 			vscode.workspace
 				.getConfiguration("chatgpt")
 				.get("response.showNotification") || false;
-		this.autoScroll = !!vscode.workspace
-			.getConfiguration("chatgpt")
-			.get("response.autoScroll");
+		this.autoScroll = true;
 		this.model = vscode.workspace
 			.getConfiguration("chatgpt")
 			.get("gpt3.model") as string;

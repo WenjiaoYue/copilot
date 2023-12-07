@@ -160,11 +160,8 @@
                         buttonWrapper.append(copyButton);
 
                         if (preCode.parentNode.previousSibling) {
-                            console.log("preCode.parentNode.previousSibling");
                             preCode.parentNode.parentNode.insertAfter(buttonWrapper, preCode.parentNode);
                         } else {
-                            console.log("not preCode.parentNode.previousSibling");
-                            // preCode.parentNode.parentElement.append(buttonWrapper);
                             preCode.parentNode.parentNode.insertBefore(buttonWrapper, preCode.parentNode);
                         }
                     });
@@ -173,7 +170,7 @@
                     existingMessage.classList.remove("result-streaming");
                 }
 
-                if (message.autoScroll && (message.done || markedResponse.endsWith("\n"))) {
+                if (message.autoScroll) {
                     list.lastChild?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
                 }
 
