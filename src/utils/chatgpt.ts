@@ -127,7 +127,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
   const body: Body = {
     "prompt": text,
     "stream": true,
-    "max_new_tokens": 256
+    "max_new_tokens": 512
   };
 
   if (conversationId) {
