@@ -73,7 +73,7 @@
                 };
 
                 list.innerHTML +=
-                    `<div class="p-4 self-end mt-4 question-element-ext relative input-background">
+                    `<div class="p-4 self-end mt-4 question-element-ext relative input-background text-xs">
                         <h2 class="flex" data-license="isc-gnc">${userSvg}You</h2>
                         <no-export class="mb-2 flex items-center" data-license="isc-gnc">
                             <div class="hidden send-cancel-elements-ext flex gap-2">
@@ -92,6 +92,8 @@
                 let existingMessage = document.getElementById(message.id);
                 let updatedValue = "";
                 let isPythonBlock = false;
+                let codeBlockStart = /```([a-zA-Z]+)/g;
+                let codeBlockPattern = /```.*?```/s;
 
 
                 const unEscapeHtml = (unsafe) => {
@@ -101,31 +103,31 @@
                 if (!message.responseInMarkdown) {
                     updatedValue = "```\r\n" + unEscapeHtml(message.value) + " \r\n ```";
                 } else {
-                    updatedValue = message.value.replace(/\\r\\n/g, '\n');
-                    console.log('updateValue', updatedValue);
-                    if (updatedValue.match(/```([a-zA-Z]+)/g)) {
-                        isPythonBlock = !isPythonBlock;
-                    }
+                    updatedValue = message.value.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
+
                 }
-
-
-                let codeElements = document.getElementsByTagName('code');
-
-                if (codeElements.length && existingMessage) {
-                    let lastCodeBlock = codeElements[codeElements.length - 1];
-                    updatedValue = `<pre><code>${lastCodeBlock.innerHTML}${updatedValue}</code></pre>`;
-                } else {
-                    updatedValue = `<pre><code>${updatedValue}</code></pre>`;
-                }
-                const markedResponse = marked.parse(updatedValue);
 
                 if (existingMessage) {
-                    existingMessage.innerHTML = markedResponse;
+                    let codeElement = existingMessage.querySelector('code');
+                    if (codeElement && !codeBlockPattern.test(codeElement.textContent)) {
+                        updatedValue = `<pre><code>${codeElement.innerHTML}${updatedValue}</code></pre> \n`;
+                    } else if (codeBlockStart.test(updatedValue)) {
+                        updatedValue = existingMessage.innerHTML + `<pre><code>${updatedValue}</code></pre> \n`;
+                    } else {
+                        updatedValue = existingMessage.innerHTML + updatedValue;
+                    }
+
+                } else if (codeBlockStart.test(updatedValue)) {
+                    updatedValue = `<pre><code>${updatedValue}</code></pre>`;
+                } 
+
+                if (existingMessage) {
+                    existingMessage.innerHTML = updatedValue;
                 } else {
                     list.innerHTML +=
-                        `<div data-license="isc-gnc" class="p-4 self-end mt-4 pb-8 answer-element-ext">
+                        `<div data-license="isc-gnc" class="p-4 self-end mt-4 pb-8 answer-element-ext  text-xs">
                         <h2 class="mb-5 flex">${aiSvg}Neural Copilot</h2>
-                        <div class="result-streaming" id="${message.id}">${markedResponse}</div>
+                        <div class="result-streaming" id="${message.id}">${updatedValue}</div>
                     </div>`;
                 }
 
