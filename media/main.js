@@ -73,7 +73,7 @@
                 };
 
                 list.innerHTML +=
-                    `<div class="p-4 self-end mt-4 question-element-ext relative input-background text-xs">
+                    `<div class="px-4 py-2 self-end mt-1 question-element-ext relative input-background text-xs">
                         <h2 class="flex" data-license="isc-gnc">${userSvg}You</h2>
                         <no-export class="mb-2 flex items-center" data-license="isc-gnc">
                             <div class="hidden send-cancel-elements-ext flex gap-2">
@@ -126,8 +126,8 @@
                     existingMessage.innerHTML = updatedValue;
                 } else {
                     list.innerHTML +=
-                        `<div data-license="isc-gnc" class="p-4 self-end mt-4 pb-8 answer-element-ext  text-xs">
-                        <h2 class="mb-5 flex">${aiSvg}Neural Copilot</h2>
+                        `<div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext input-background text-xs">
+                        <h2 class="mb-1 flex">${aiSvg}Neural Copilot</h2>
                         <div class="result-streaming" id="${message.id}">${updatedValue}</div>
                     </div>`;
                 }
@@ -135,8 +135,8 @@
                 if (!message.done) {
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
                     preCodeList.forEach((preCode) => {
-                        preCode.classList.add("input-background", "p-4", "pb-2", "pt-0", "text-xs", "block", "whitespace-pre-wrap", "overflow-x-scroll");
-                        preCode.parentElement.classList.add("pre-code-element", "relative");
+                        preCode.classList.add("input-background", "p-2", "text-xs", "block", "whitespace-pre-wrap", "overflow-x-scroll", "bg-[#1f1f1f]", "rounded");
+                        preCode.parentElement.classList.add("pre-code-element", "relative", "my-2", "mx-1");
 
                         const buttonWrapper = document.createElement("no-export");
                         buttonWrapper.classList.add("code-actions-wrapper", "flex", "gap-3", "pr-2", "pt-1", "pb-1", "flex-wrap", "items-center", "justify-end", "rounded-t-lg", "input-background");
@@ -179,7 +179,7 @@
 
                 list.innerHTML +=
                     `<div class="p-4 self-end error-element-ext" data-license="isc-gnc">
-                        <h2 class="mb-5 flex">${aiSvg}Neural Copilot
+                        <h2 class="mb-1 flex">${aiSvg}Neural Copilot
                         </h2>
                         <div class="text-red-400">${marked.parse(messageValue)}</div>
                     </div>`;
