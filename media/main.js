@@ -120,7 +120,7 @@
 
                 } else if (codeBlockStart.test(updatedValue)) {
                     updatedValue = `<pre><code>${updatedValue}</code></pre>`;
-                } 
+                }
 
                 if (existingMessage) {
                     existingMessage.innerHTML = updatedValue;
@@ -244,7 +244,7 @@
 
     document.addEventListener("click", (e) => {
         const targetButton = e.target.closest('button');
-        console.log("click", targetButton?.id );
+        console.log("click", targetButton?.id);
         if (targetButton?.id === "more-button") {
             e.preventDefault();
             document.getElementById('chat-button-wrapper')?.classList.toggle("hidden");
