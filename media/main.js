@@ -247,7 +247,7 @@
 
     document.addEventListener("click", (e) => {
         const targetButton = e.target.closest('button');
-        console.log("click");
+        console.log("click", targetButton?.id );
         if (targetButton?.id === "more-button") {
             e.preventDefault();
             document.getElementById('chat-button-wrapper')?.classList.toggle("hidden");
@@ -282,10 +282,8 @@
         // }
 
         if (targetButton?.id === "ask-button") {
-            this.logEvent("ask-button");
-
-            // e.preventDefault();
-            // addFreeTextQuestion();
+            e.preventDefault();
+            addFreeTextQuestion();
             return;
         }
 
