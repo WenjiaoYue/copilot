@@ -73,7 +73,7 @@
                 };
 
                 list.innerHTML +=
-                    `<div class="p-4 self-end mt-4 question-element-ext relative input-background text-xs">
+                    `<div class="px-4 py-2 self-end mt-1 question-element-ext relative input-background text-xs">
                         <h2 class="flex" data-license="isc-gnc">${userSvg}You</h2>
                         <no-export class="mb-2 flex items-center" data-license="isc-gnc">
                             <div class="hidden send-cancel-elements-ext flex gap-2">
@@ -91,6 +91,7 @@
             case "addResponse":
                 let existingMessage = document.getElementById(message.id);
                 let updatedValue = "";
+                let endOfCode = message.value == "\`\`\`\\r\\n"
                 let isPythonBlock = false;
                 let codeBlockStart = /```([a-zA-Z]+)/g;
                 let codeBlockPattern = /```.*?```/s;
@@ -110,7 +111,7 @@
                 if (existingMessage) {
                     let codeElement = existingMessage.querySelector('code');
                     if (codeElement && !codeBlockPattern.test(codeElement.textContent)) {
-                        updatedValue = `<pre><code>${codeElement.innerHTML}${updatedValue}</code></pre> \n`;
+                        updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre><code>${codeElement.innerHTML}${updatedValue}</code></pre> \n`;
                     } else if (codeBlockStart.test(updatedValue)) {
                         updatedValue = existingMessage.innerHTML + `<pre><code>${updatedValue}</code></pre> \n`;
                     } else {
@@ -119,14 +120,14 @@
 
                 } else if (codeBlockStart.test(updatedValue)) {
                     updatedValue = `<pre><code>${updatedValue}</code></pre>`;
-                } 
+                }
 
                 if (existingMessage) {
                     existingMessage.innerHTML = updatedValue;
                 } else {
                     list.innerHTML +=
-                        `<div data-license="isc-gnc" class="p-4 self-end mt-4 pb-8 answer-element-ext  text-xs">
-                        <h2 class="mb-5 flex">${aiSvg}Neural Copilot</h2>
+                        `<div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext input-background text-xs">
+                        <h2 class="mb-1 flex">${aiSvg}Neural Copilot</h2>
                         <div class="result-streaming" id="${message.id}">${updatedValue}</div>
                     </div>`;
                 }
@@ -134,8 +135,8 @@
                 if (!message.done) {
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
                     preCodeList.forEach((preCode) => {
-                        preCode.classList.add("input-background", "p-4", "pb-2", "pt-0", "text-xs", "block", "whitespace-pre-wrap", "overflow-x-scroll");
-                        preCode.parentElement.classList.add("pre-code-element", "relative");
+                        preCode.classList.add("input-background", "p-2", "text-xs", "block", "whitespace-pre-wrap", "overflow-x-scroll", "bg-[#1f1f1f]", "rounded");
+                        preCode.parentElement.classList.add("pre-code-element", "relative", "my-2", "mx-1");
 
                         const buttonWrapper = document.createElement("no-export");
                         buttonWrapper.classList.add("code-actions-wrapper", "flex", "gap-3", "pr-2", "pt-1", "pb-1", "flex-wrap", "items-center", "justify-end", "rounded-t-lg", "input-background");
@@ -158,12 +159,8 @@
                         newTab.innerHTML = `${plusSvg} New`;
 
                         newTab.classList.add("new-code-element-ext", "p-1", "pr-2", "flex", "items-center", "rounded-lg");
-
                         buttonWrapper.append(copyButton);
-
-                        if (preCode.parentNode.previousSibling) {
-                            preCode.parentNode.parentNode.insertAfter(buttonWrapper, preCode.parentNode);
-                        } else {
+                        if (endOfCode) {
                             preCode.parentNode.parentNode.insertBefore(buttonWrapper, preCode.parentNode);
                         }
                     });
@@ -182,7 +179,7 @@
 
                 list.innerHTML +=
                     `<div class="p-4 self-end error-element-ext" data-license="isc-gnc">
-                        <h2 class="mb-5 flex">${aiSvg}Neural Copilot
+                        <h2 class="mb-1 flex">${aiSvg}Neural Copilot
                         </h2>
                         <div class="text-red-400">${marked.parse(messageValue)}</div>
                     </div>`;
@@ -247,7 +244,7 @@
 
     document.addEventListener("click", (e) => {
         const targetButton = e.target.closest('button');
-        console.log("click");
+        console.log("click", targetButton?.id);
         if (targetButton?.id === "more-button") {
             e.preventDefault();
             document.getElementById('chat-button-wrapper')?.classList.toggle("hidden");
@@ -282,10 +279,8 @@
         // }
 
         if (targetButton?.id === "ask-button") {
-            this.logEvent("ask-button");
-
-            // e.preventDefault();
-            // addFreeTextQuestion();
+            e.preventDefault();
+            addFreeTextQuestion();
             return;
         }
 
@@ -353,14 +348,14 @@
         }
 
         if (targetButton?.classList?.contains("code-element-ext")) {
-            console.log("find copy button");
             e.preventDefault();
 
-            navigator.clipboard.writeText(targetButton.parentElement?.nextElementSibling?.lastChild?.textContent).then(() => {
-                console.log('targetButton');
+            let codeBlockPattern = /```[a-zA-Z]+\n([\s\S]*?)```/s;
+            let codeContent = targetButton.parentElement?.nextElementSibling?.lastChild?.textContent
+            codeContent = codeContent.match(codeBlockPattern)[1]
 
+            navigator.clipboard.writeText(codeContent).then(() => {
                 targetButton.innerHTML = `${checkSvg} Copied`;
-
                 setTimeout(() => {
                     targetButton.innerHTML = `${clipboardSvg} Copy`;
                 }, 1500);

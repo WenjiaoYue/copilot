@@ -3,9 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import { createParser } from "eventsource-parser";
 import fetch from "node-fetch";
 
-
-
-
 async function* streamAsyncIterable(stream: any) {
   const reader = stream.getReader();
   try {
@@ -42,6 +39,7 @@ var ChatGPTError = class extends Error { };
 // src/fetch-sse.ts
 async function fetchSSE(url: string, options: Options, fetch2 = fetch) {
   const { onMessage, ...fetchOptions } = options;
+  //@ts-ignore
   const res: Response | any = await fetch2(url, fetchOptions);
 
   if (!res.ok) {
@@ -142,7 +140,6 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     text: ""
   };
 
-
   const responseP: any = new Promise((resolve, reject) => {
     fetchSSE(
       url,
@@ -152,12 +149,12 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         body: JSON.stringify(body),
         signal: abortSignal,
         onMessage: (data: string) => {
-          console.log('data',  data.startsWith("b") ? data.slice(2, -1): data );
+          console.log('data', data.startsWith("b") ? data.slice(2, -1) : data);
           if (data === "[DONE]") {
             return resolve(result);
           }
           try {
-            result.text = data.startsWith("b") ? data.slice(2, -1): data;
+            result.text = data.startsWith("b") ? data.slice(2, -1) : data;
             if (onProgress) {
               onProgress(result);
             }

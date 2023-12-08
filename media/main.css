@@ -69,10 +69,10 @@ h1 {
 
 h2 {
     font-size: 1em !important;
-    margin-top: 0.83em !important;
+    /* margin-top: 0.83em !important;
     margin-bottom: 0.83em !important;
     margin-left: 0 !important;
-    margin-right: 0 !important;
+    margin-right: 0 !important; */
     font-weight: bold !important;
 }
 
