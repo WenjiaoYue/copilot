@@ -120,7 +120,7 @@
 
                 } else if (codeBlockStart.test(updatedValue)) {
                     updatedValue = `<pre><code>${updatedValue}</code></pre>`;
-                } 
+                }
 
                 if (existingMessage) {
                     existingMessage.innerHTML = updatedValue;
@@ -244,7 +244,7 @@
 
     document.addEventListener("click", (e) => {
         const targetButton = e.target.closest('button');
-        console.log("click", targetButton?.id );
+        console.log("click", targetButton?.id);
         if (targetButton?.id === "more-button") {
             e.preventDefault();
             document.getElementById('chat-button-wrapper')?.classList.toggle("hidden");
@@ -350,7 +350,7 @@
         if (targetButton?.classList?.contains("code-element-ext")) {
             e.preventDefault();
 
-            let codeBlockPattern = /```([\s\S]*?)```/s;
+            let codeBlockPattern = /```[a-zA-Z]+\n([\s\S]*?)```/s;
             let codeContent = targetButton.parentElement?.nextElementSibling?.lastChild?.textContent
             codeContent = codeContent.match(codeBlockPattern)[1]
 

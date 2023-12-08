@@ -174,7 +174,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
 	public setMethod(): void {
 		console.log('loginMethod');
-		
+
 		this.loginMethod = vscode.workspace
 			.getConfiguration("chatgpt")
 			.get("method") as LoginMethod;
@@ -245,8 +245,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		if (code != null) {
 			// Add prompt prefix to the code if there was a code block selected
 			question = `${question}${language
-					? ` (The following code is in ${language} programming language)`
-					: ""
+				? ` (The following code is in ${language} programming language)`
+				: ""
 				}: ${code}`;
 		}
 		return question + "\r\n";
@@ -274,8 +274,6 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		// prompt = `${prompt} ${highlighted}`;
 		prompt = `${prompt}`;
 		const final_content = `${prompt} ${highlighted}`;
-		
-
 		this.questionCounter++;
 
 		this.response = '';
@@ -309,7 +307,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 			// chat work
 			if (this.useGpt3) {
 				console.log('this.useGpt3');
-				
+
 				// back_end response
 				({ text: this.response, conversationId: this.conversationId, parentMessageId: this.messageId } = await chatgptSendMessage(question, {
 					promptPrefix: this.systemContext,
@@ -321,10 +319,9 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 						this.sendMessage({ type: 'addResponse', value: this.response, id: this.messageId, autoScroll: this.autoScroll, responseInMarkdown });
 					},
 				}));
-				
+
 			}
 
-			
 			if (options.previousAnswer != null) {
 				this.response = options.previousAnswer + this.response;
 			}
