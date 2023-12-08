@@ -350,7 +350,7 @@
         if (targetButton?.classList?.contains("code-element-ext")) {
             e.preventDefault();
 
-            let codeBlockPattern = /```([\s\S]*?)```/s;
+            let codeBlockPattern = /```[a-zA-Z]+\n([\s\S]*?)```/s;
             let codeContent = targetButton.parentElement?.nextElementSibling?.lastChild?.textContent
             codeContent = codeContent.match(codeBlockPattern)[1]
 
