@@ -91,6 +91,7 @@
             case "addResponse":
                 let existingMessage = document.getElementById(message.id);
                 let updatedValue = "";
+                let endOfCode = message.value == "\`\`\`\\r\\n"
                 let isPythonBlock = false;
                 let codeBlockStart = /```([a-zA-Z]+)/g;
                 let codeBlockPattern = /```.*?```/s;
@@ -110,7 +111,7 @@
                 if (existingMessage) {
                     let codeElement = existingMessage.querySelector('code');
                     if (codeElement && !codeBlockPattern.test(codeElement.textContent)) {
-                        updatedValue = `<pre><code>${codeElement.innerHTML}${updatedValue}</code></pre> \n`;
+                        updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre><code>${codeElement.innerHTML}${updatedValue}</code></pre> \n`;
                     } else if (codeBlockStart.test(updatedValue)) {
                         updatedValue = existingMessage.innerHTML + `<pre><code>${updatedValue}</code></pre> \n`;
                     } else {
@@ -158,12 +159,8 @@
                         newTab.innerHTML = `${plusSvg} New`;
 
                         newTab.classList.add("new-code-element-ext", "p-1", "pr-2", "flex", "items-center", "rounded-lg");
-
                         buttonWrapper.append(copyButton);
-
-                        if (preCode.parentNode.previousSibling) {
-                            preCode.parentNode.parentNode.insertAfter(buttonWrapper, preCode.parentNode);
-                        } else {
+                        if (endOfCode) {
                             preCode.parentNode.parentNode.insertBefore(buttonWrapper, preCode.parentNode);
                         }
                     });
@@ -351,14 +348,14 @@
         }
 
         if (targetButton?.classList?.contains("code-element-ext")) {
-            console.log("find copy button");
             e.preventDefault();
 
-            navigator.clipboard.writeText(targetButton.parentElement?.nextElementSibling?.lastChild?.textContent).then(() => {
-                console.log('targetButton');
+            let codeBlockPattern = /```([\s\S]*?)```/s;
+            let codeContent = targetButton.parentElement?.nextElementSibling?.lastChild?.textContent
+            codeContent = codeContent.match(codeBlockPattern)[1]
 
+            navigator.clipboard.writeText(codeContent).then(() => {
                 targetButton.innerHTML = `${checkSvg} Copied`;
-
                 setTimeout(() => {
                     targetButton.innerHTML = `${clipboardSvg} Copy`;
                 }, 1500);
