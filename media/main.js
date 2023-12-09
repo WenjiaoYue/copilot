@@ -111,15 +111,15 @@
                 if (existingMessage) {
                     let codeElement = existingMessage.querySelector('code');
                     if (codeElement && !codeBlockPattern.test(codeElement.textContent)) {
-                        updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre><code>${codeElement.innerHTML}${updatedValue}</code></pre> \n`;
+                        updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre> \n`;
                     } else if (codeBlockStart.test(updatedValue)) {
-                        updatedValue = existingMessage.innerHTML + `<pre><code>${updatedValue}</code></pre> \n`;
+                        updatedValue = existingMessage.innerHTML + `<pre class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${updatedValue}</code></pre> \n`;
                     } else {
                         updatedValue = existingMessage.innerHTML + updatedValue;
                     }
 
                 } else if (codeBlockStart.test(updatedValue)) {
-                    updatedValue = `<pre><code>${updatedValue}</code></pre>`;
+                    updatedValue = `<pre class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${updatedValue}</code></pre>`;
                 }
 
                 if (existingMessage) {
@@ -132,12 +132,12 @@
                     </div>`;
                 }
 
-                if (!message.done) {
+                if (message.done) {
+                    console.log('done');
+                    
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
                     preCodeList.forEach((preCode) => {
-                        preCode.classList.add("input-background", "p-2", "text-xs", "block", "whitespace-pre-wrap", "overflow-x-scroll", "bg-[#1f1f1f]", "rounded");
-                        preCode.parentElement.classList.add("pre-code-element", "relative", "my-2", "mx-1");
-
+                
                         const buttonWrapper = document.createElement("no-export");
                         buttonWrapper.classList.add("code-actions-wrapper", "flex", "gap-3", "pr-2", "pt-1", "pb-1", "flex-wrap", "items-center", "justify-end", "rounded-t-lg", "input-background");
 
