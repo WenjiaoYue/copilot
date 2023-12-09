@@ -261,7 +261,9 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		// TODO
 		const editor = vscode.window.activeTextEditor;
 		let highlighted = "";
+		let editorLanguage = "python";
 		if (editor) {
+			editorLanguage = editor.document.languageId;
 			const selection = editor.selection;
 			if (selection && !selection.isEmpty) {
 				const selectionRange = new vscode.Range(selection.start.line, selection.start.character, selection.end.line, selection.end.character);
@@ -270,11 +272,20 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		}
 		this.logEvent(`highlighted: ${highlighted}`);
 		this.logEvent(`code: ${options.code}`);
+		this.logEvent(`editorLanguage: ${editorLanguage}`);
 
 		// prompt = `${prompt} ${highlighted}`;
+		let final_content = "";
 		prompt = `${prompt}`;
-		const final_content = `${prompt} ${highlighted}`;
+		if (highlighted) {
+			final_content = `${prompt}  \r\n\`\`\`${editorLanguage}\n ${highlighted}\r\n\`\`\` `;
+		} else {
+			final_content = `${prompt}`;
+
+		}
 		this.questionCounter++;
+
+
 
 		this.response = '';
 		const question = this.processQuestion(final_content, options.code, options.language);
@@ -306,7 +317,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		try {
 			// chat work
 			if (this.useGpt3) {
-				console.log('this.useGpt3');
+				console.log('Question', question);
 
 				// back_end response
 				({ text: this.response, conversationId: this.conversationId, parentMessageId: this.messageId } = await chatgptSendMessage(question, {

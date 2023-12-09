@@ -97,6 +97,7 @@
                 let codeBlockPattern = /```.*?```/s;
 
 
+
                 const unEscapeHtml = (unsafe) => {
                     return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
                 };
@@ -110,7 +111,7 @@
 
                 if (existingMessage) {
                     let codeElement = existingMessage.querySelector('code');
-                    if (codeElement && !codeBlockPattern.test(codeElement.textContent)) {
+                    if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {
                         updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
                     } else if (codeBlockStart.test(updatedValue)) {
                         updatedValue = existingMessage.innerHTML + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${updatedValue}</code></pre>`;
