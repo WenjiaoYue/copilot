@@ -111,15 +111,15 @@
                 if (existingMessage) {
                     let codeElement = existingMessage.querySelector('code');
                     if (codeElement && !codeBlockPattern.test(codeElement.textContent)) {
-                        updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre> \n`;
+                        updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
                     } else if (codeBlockStart.test(updatedValue)) {
-                        updatedValue = existingMessage.innerHTML + `<pre class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${updatedValue}</code></pre> \n`;
+                        updatedValue = existingMessage.innerHTML + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${updatedValue}</code></pre>`;
                     } else {
                         updatedValue = existingMessage.innerHTML + updatedValue;
                     }
 
                 } else if (codeBlockStart.test(updatedValue)) {
-                    updatedValue = `<pre class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${updatedValue}</code></pre>`;
+                    updatedValue = `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${updatedValue}</code></pre>`;
                 }
 
                 if (existingMessage) {
@@ -132,14 +132,13 @@
                     </div>`;
                 }
 
-                if (message.done) {
-                    console.log('done');
-                    
+                if (message.done) {                    
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
+
                     preCodeList.forEach((preCode) => {
                 
                         const buttonWrapper = document.createElement("no-export");
-                        buttonWrapper.classList.add("code-actions-wrapper", "flex", "gap-3", "pr-2", "pt-1", "pb-1", "flex-wrap", "items-center", "justify-end", "rounded-t-lg", "input-background");
+                        buttonWrapper.classList.add("code-actions-wrapper", "flex", "gap-3", "pr-2", "pb-1", "flex-wrap", "items-center", "justify-end", "rounded-t-lg",);
 
                         // Create copy to clipboard button
                         const copyButton = document.createElement("button");
@@ -160,9 +159,8 @@
 
                         newTab.classList.add("new-code-element-ext", "p-1", "pr-2", "flex", "items-center", "rounded-lg");
                         buttonWrapper.append(copyButton);
-                        if (endOfCode) {
-                            preCode.parentNode.parentNode.insertBefore(buttonWrapper, preCode.parentNode);
-                        }
+                       
+                        preCode.parentNode.append(buttonWrapper);
                     });
 
                     existingMessage = document.getElementById(message.id);
@@ -351,8 +349,19 @@
             e.preventDefault();
 
             let codeBlockPattern = /```[a-zA-Z]+\n([\s\S]*?)```/s;
-            let codeContent = targetButton.parentElement?.nextElementSibling?.lastChild?.textContent
-            codeContent = codeContent.match(codeBlockPattern)[1]
+            let codeMissingBlockPattern = /```([a-zA-Z]+)\n([\s\S]*)$/s;
+            let codeContent = targetButton.parentElement?.previousElementSibling?.lastChild?.textContent;
+
+            if (codeContent.match(codeBlockPattern)) {
+                console.log('codeBlockPattern', codeContent.match(codeBlockPattern));
+                
+                codeContent = codeContent.match(codeBlockPattern)[1];
+            }
+            else {
+                console.log('codeBlockPattern', codeContent.match(codeMissingBlockPattern));
+
+                codeContent = codeContent.match(codeMissingBlockPattern)[2];
+            }
 
             navigator.clipboard.writeText(codeContent).then(() => {
                 targetButton.innerHTML = `${checkSvg} Copied`;
