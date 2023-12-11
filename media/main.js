@@ -91,12 +91,7 @@
             case "addResponse":
                 let existingMessage = document.getElementById(message.id);
                 let updatedValue = "";
-                let endOfCode = message.value == "\`\`\`\\r\\n"
-                let isPythonBlock = false;
                 let codeBlockStart = /```([a-zA-Z]+)/g;
-                let codeBlockPattern = /```.*?```/s;
-
-
 
                 const unEscapeHtml = (unsafe) => {
                     return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
@@ -106,11 +101,11 @@
                     updatedValue = "```\r\n" + unEscapeHtml(message.value) + " \r\n ```";
                 } else {
                     updatedValue = message.value.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
-
                 }
 
                 if (existingMessage) {
-                    let codeElement = existingMessage.querySelector('code');
+                    let allCodeElements = document.querySelectorAll('code')
+                    let codeElement = allCodeElements[allCodeElements.length - 1]
                     if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {
                         updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
                     } else if (codeBlockStart.test(updatedValue)) {
