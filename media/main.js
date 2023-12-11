@@ -106,13 +106,15 @@
                     updatedValue = "```\r\n" + unEscapeHtml(message.value) + " \r\n ```";
                 } else {
                     updatedValue = message.value.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
-
                 }
 
                 if (existingMessage) {
                     let codeElement = existingMessage.querySelector('code');
-                    if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {
-                        updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
+                    console.log('existingMessage.innerHTML', existingMessage.innerHTML);
+                    console.log('existingMessage.innerHTML.split("<pre")', existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre")));
+                    
+                    if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {                        
+                        updatedValue = existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre")) + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
                     } else if (codeBlockStart.test(updatedValue)) {
                         updatedValue = existingMessage.innerHTML + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${updatedValue}</code></pre>`;
                     } else {
@@ -133,7 +135,7 @@
                     </div>`;
                 }
 
-                hljs.highlightAll()
+                hljs.highlightAll();
 
                 if (message.done) {                    
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
@@ -354,15 +356,15 @@
             let codeBlockPattern = /```[a-zA-Z]+\n([\s\S]*?)```/s;
             let codeMissingBlockPattern = /```([a-zA-Z]+)\n([\s\S]*)$/s;
             let codeContent = targetButton.parentElement?.previousElementSibling?.lastChild?.textContent;
-
-            if (codeContent.match(codeBlockPattern)) {
-                console.log('codeBlockPattern', codeContent.match(codeBlockPattern));
-                
+            console.log('codeContent', targetButton.parentElement);
+            console.log('codeContent', targetButton.parentElement?.previousElementSibling); 
+            console.log('codeContent', targetButton.parentElement?.previousElementSibling.text());
+            console.log('codeContent', targetButton.parentElement?.previousElementSibling?.lastChild?.textContent);
+            
+            if (codeContent.match(codeBlockPattern)) {                
                 codeContent = codeContent.match(codeBlockPattern)[1];
             }
             else {
-                console.log('codeBlockPattern', codeContent.match(codeMissingBlockPattern));
-
                 codeContent = codeContent.match(codeMissingBlockPattern)[2];
             }
 
