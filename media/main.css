@@ -14,7 +14,7 @@ body {
     font-size: var(--vscode-editor-font-size);
     font-weight: var(--vscode-font-weight);
     font-family: var(--vscode-font-family);
-    background-color: var(--vscode-editor-background);
+    background-color: var(--vscode-sideBar-background);
 }
 
 ol,
@@ -243,7 +243,7 @@ textarea::placeholder {
 
 .textarea-wrapper>textarea,
 .textarea-wrapper::after {
-    border: 1px solid black;
+    border: 1px solid rgb(177, 177, 177);
     padding: .5rem 5rem .5rem .5rem;
     font: inherit;
     grid-area: 1 / 1 / 2 / 2;
@@ -270,6 +270,10 @@ textarea::placeholder {
 
 .input-background {
     background: var(--vscode-input-background);
+}
+
+.code-background {
+    background: var(--vscode-editor-background);
 }
 
 .send-element-ext,

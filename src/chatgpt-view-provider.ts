@@ -589,10 +589,11 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 					<div class="p-4 flex items-center pt-2" data-license="isc-gnc">
 						<div class="flex-1 textarea-wrapper">
 							<textarea
+								class="border border-white"
 								type="text"
 								rows="1" data-license="isc-gnc"
 								id="question-input"
-								placeholder="Copilot chat ..."
+								placeholder="Ask a question or type '/' for commands"
 								onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
 						</div>
 						
