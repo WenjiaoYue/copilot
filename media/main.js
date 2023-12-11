@@ -74,7 +74,7 @@
 
                 list.innerHTML +=
                     `<div class="px-4 py-2 self-end mt-1 question-element-ext relative text-xs">
-                        <h2 class="flex" data-license="isc-gnc">${userSvg}User</h2>
+                        <h2 class="flex items-center" data-license="isc-gnc">${userSvg}User</h2>
                         <no-export class="mb-2 flex items-center" data-license="isc-gnc">
                             <div class="hidden send-cancel-elements-ext flex gap-2">
                                 <button title="Send this prompt" class="send-element-ext p-1 pr-2 flex items-center">${sendSvg}&nbsp;Send</button>
@@ -122,7 +122,7 @@
                 } else {
                     list.innerHTML +=
                         `<div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext text-xs">
-                        <h2 class="mb-1 flex">${aiSvg}Neural Copilot</h2>
+                        <h2 class="mb-2 flex">${aiSvg}Neural Copilot</h2>
                         <div class="result-streaming" id="${message.id}">${updatedValue}</div>
                     </div>`;
                 }
@@ -175,7 +175,7 @@
                 list.innerHTML +=
                 `
                 <div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext text-xs">
-                        <h2 class="mb-1 flex">${aiSvg}Neural Copilot</h2>
+                        <h2 class="mb-2 flex">${aiSvg}Neural Copilot</h2>
                         <div class="result-streaming" id="${message.id}">${marked.parse(messageValue)}</div>
                     </div>
                     `;
