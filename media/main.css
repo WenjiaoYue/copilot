@@ -14,7 +14,7 @@ body {
     font-size: var(--vscode-editor-font-size);
     font-weight: var(--vscode-font-weight);
     font-family: var(--vscode-font-family);
-    background-color: var(--vscode-editor-background);
+    background-color: var(--vscode-sideBar-background);
 }
 
 ol,
@@ -270,6 +270,10 @@ textarea::placeholder {
 
 .input-background {
     background: var(--vscode-input-background);
+}
+
+.code-background {
+    background: var(--vscode-editor-background);
 }
 
 .send-element-ext,

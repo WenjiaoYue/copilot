@@ -73,7 +73,7 @@
                 };
 
                 list.innerHTML +=
-                    `<div class="px-4 py-2 self-end mt-1 question-element-ext relative input-background text-xs">
+                    `<div class="px-4 py-2 self-end mt-1 question-element-ext relative text-xs">
                         <h2 class="flex" data-license="isc-gnc">${userSvg}You</h2>
                         <no-export class="mb-2 flex items-center" data-license="isc-gnc">
                             <div class="hidden send-cancel-elements-ext flex gap-2">
@@ -110,26 +110,23 @@
 
                 if (existingMessage) {
                     let codeElement = existingMessage.querySelector('code');
-                    console.log('existingMessage.innerHTML', existingMessage.innerHTML);
-                    console.log('existingMessage.innerHTML.split("<pre")', existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre")));
-                    
-                    if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {                                                
-                        updatedValue = existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre")) + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
+                    if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {
+                        updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre class="code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
                     } else if (codeBlockStart.test(updatedValue)) {
-                        updatedValue = existingMessage.innerHTML + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${updatedValue}</code></pre>`;
+                        updatedValue = existingMessage.innerHTML + `<pre class="code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
                     } else {
                         updatedValue = existingMessage.innerHTML + updatedValue;
                     }
 
                 } else if (codeBlockStart.test(updatedValue)) {
-                    updatedValue = `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${updatedValue}</code></pre>`;
+                    updatedValue = `<pre class="code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
                 }
 
                 if (existingMessage) {
                     existingMessage.innerHTML = updatedValue;
                 } else {
                     list.innerHTML +=
-                        `<div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext input-background text-xs">
+                        `<div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext text-xs">
                         <h2 class="mb-1 flex">${aiSvg}Neural Copilot</h2>
                         <div class="result-streaming" id="${message.id}">${updatedValue}</div>
                     </div>`;
