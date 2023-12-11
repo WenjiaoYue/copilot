@@ -111,15 +111,15 @@
                 if (existingMessage) {
                     let codeElement = existingMessage.querySelector('code');
                     if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {
-                        updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre class="code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
+                        updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
                     } else if (codeBlockStart.test(updatedValue)) {
-                        updatedValue = existingMessage.innerHTML + `<pre class="code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                        updatedValue = existingMessage.innerHTML + `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
                     } else {
                         updatedValue = existingMessage.innerHTML + updatedValue;
                     }
 
                 } else if (codeBlockStart.test(updatedValue)) {
-                    updatedValue = `<pre class="code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                    updatedValue = `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
                 }
 
                 if (existingMessage) {
