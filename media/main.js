@@ -3,7 +3,7 @@
 
     marked.setOptions({
         renderer: new marked.Renderer(),
-        highlight: function (code, _lang) {
+        highlight: function (code, _lang="python") {
             return hljs.highlightAuto(code).value;
         },
         langPrefix: 'hljs language-',
@@ -16,7 +16,7 @@
     });
 
     const aiSvg = `
-    <svg t="1700643324811"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1538" class="w-5 mr-2"><path d="M810.688 82.624a62.08 62.08 0 0 1 0 86.592l-54.848 55.936h56.128c99.456 0 180.032 82.304 180.032 183.744v367.36c0 101.504-80.64 183.744-180.032 183.744H212.032C112.512 960 32 877.76 32 776.32V408.96c0-101.504 80.64-183.68 180.032-183.68h55.936l-54.784-56A62.08 62.08 0 0 1 212.48 81.92a59.136 59.136 0 0 1 85.632 0.768l127.296 129.92c3.776 3.84 6.912 8.064 9.472 12.544h154.24c2.56-4.48 5.76-8.768 9.536-12.608l127.232-129.92a59.136 59.136 0 0 1 84.864 0z m1.28 265.536H212.032a60.544 60.544 0 0 0-59.904 56.64l-0.128 4.608v367.36c0 32.32 24.448 58.752 55.552 61.056l4.48 0.192h599.936c31.424 0 57.6-24.704 59.904-56.64l0.128-4.608v-367.36a60.672 60.672 0 0 0-60.032-61.248z m-480 122.432c33.152 0 60.032 27.456 60.032 61.248v61.184c0 33.856-26.88 61.248-60.032 61.248a60.608 60.608 0 0 1-59.968-61.248V531.84c0-33.792 26.88-61.248 60.032-61.248z m360 0c33.152 0 60.032 27.456 60.032 61.248v61.184c0 33.856-26.88 61.248-60.032 61.248a60.608 60.608 0 0 1-59.968-61.248V531.84c0-33.792 26.88-61.248 60.032-61.248z" p-id="1539" fill="#c5c5c5"></path></svg>    `;
+    <svg t="1700643324811"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1538" class="ml-1 w-4 mr-2"><path d="M810.688 82.624a62.08 62.08 0 0 1 0 86.592l-54.848 55.936h56.128c99.456 0 180.032 82.304 180.032 183.744v367.36c0 101.504-80.64 183.744-180.032 183.744H212.032C112.512 960 32 877.76 32 776.32V408.96c0-101.504 80.64-183.68 180.032-183.68h55.936l-54.784-56A62.08 62.08 0 0 1 212.48 81.92a59.136 59.136 0 0 1 85.632 0.768l127.296 129.92c3.776 3.84 6.912 8.064 9.472 12.544h154.24c2.56-4.48 5.76-8.768 9.536-12.608l127.232-129.92a59.136 59.136 0 0 1 84.864 0z m1.28 265.536H212.032a60.544 60.544 0 0 0-59.904 56.64l-0.128 4.608v367.36c0 32.32 24.448 58.752 55.552 61.056l4.48 0.192h599.936c31.424 0 57.6-24.704 59.904-56.64l0.128-4.608v-367.36a60.672 60.672 0 0 0-60.032-61.248z m-480 122.432c33.152 0 60.032 27.456 60.032 61.248v61.184c0 33.856-26.88 61.248-60.032 61.248a60.608 60.608 0 0 1-59.968-61.248V531.84c0-33.792 26.88-61.248 60.032-61.248z m360 0c33.152 0 60.032 27.456 60.032 61.248v61.184c0 33.856-26.88 61.248-60.032 61.248a60.608 60.608 0 0 1-59.968-61.248V531.84c0-33.792 26.88-61.248 60.032-61.248z" p-id="1539" fill="#c5c5c5"></path></svg>    `;
 
     const userSvg = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" data-license="isc-gnc" stroke-width="1.5" stroke="currentColor" class="w-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" /></svg>`;
 
@@ -74,7 +74,7 @@
 
                 list.innerHTML +=
                     `<div class="px-4 py-2 self-end mt-1 question-element-ext relative text-xs">
-                        <h2 class="flex" data-license="isc-gnc">${userSvg}You</h2>
+                        <h2 class="flex" data-license="isc-gnc">${userSvg}User</h2>
                         <no-export class="mb-2 flex items-center" data-license="isc-gnc">
                             <div class="hidden send-cancel-elements-ext flex gap-2">
                                 <button title="Send this prompt" class="send-element-ext p-1 pr-2 flex items-center">${sendSvg}&nbsp;Send</button>
@@ -106,6 +106,7 @@
                 if (existingMessage) {
                     let allCodeElements = document.querySelectorAll('code')
                     let codeElement = allCodeElements[allCodeElements.length - 1]
+                    console.log('codeElement', codeElement);
                     
                     if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {                        
                         updatedValue = existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre")) + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
@@ -175,11 +176,12 @@
                 const messageValue = message.value || "An error occurred. If this issue persists please clear your session token with `ChatGPT: Reset session` command and/or restart your Visual Studio Code. If you still experience issues, it may be due to outage on https://openai.com services.";
 
                 list.innerHTML +=
-                    `<div class="p-4 self-end error-element-ext" data-license="isc-gnc">
-                        <h2 class="mb-1 flex">${aiSvg}Neural Copilot
-                        </h2>
-                        <div class="text-red-400">${marked.parse(messageValue)}</div>
-                    </div>`;
+                `
+                <div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext text-xs">
+                        <h2 class="mb-1 flex">${aiSvg}Neural Copilot</h2>
+                        <div class="result-streaming" id="${message.id}">${marked.parse(messageValue)}</div>
+                    </div>
+                    `;
 
                 if (message.autoScroll) {
                     list.lastChild?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });

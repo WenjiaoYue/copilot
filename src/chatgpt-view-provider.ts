@@ -576,7 +576,6 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 					<div class="flex-1 overflow-y-auto hidden" id="conversation-list" data-license="isc-gnc"></div>
 
 					<div id="in-progress" class="pl-4 pt-2 flex items-center hidden" data-license="isc-gnc">
-						<div class="typing">Thinking</div>
 						<div class="spinner">
 							<div class="bounce1"></div>
 							<div class="bounce2"></div>
@@ -593,7 +592,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 								type="text"
 								rows="1" data-license="isc-gnc"
 								id="question-input"
-								placeholder="Ask a question or type '/' for commands"
+								placeholder="Ask a question ..."
 								onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
 						</div>
 						
