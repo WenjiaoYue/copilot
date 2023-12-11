@@ -355,19 +355,15 @@
 
             let codeBlockPattern = /```[a-zA-Z]+\n([\s\S]*?)```/s;
             let codeMissingBlockPattern = /```([a-zA-Z]+)\n([\s\S]*)$/s;
-            let codeContent = targetButton.parentElement?.previousElementSibling?.lastChild?.textContent;
-            console.log('codeContent', targetButton.parentElement);
-            console.log('codeContent', targetButton.parentElement?.previousElementSibling); 
-            console.log('codeContent', targetButton.parentElement?.previousElementSibling.text());
-            console.log('codeContent', targetButton.parentElement?.previousElementSibling?.lastChild?.textContent);
-            
-            if (codeContent.match(codeBlockPattern)) {                
+            // let codeContent = targetButton.parentElement?.previousElementSibling?.lastChild?.textContent;
+            let codeContent = targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig,"")
+            if (codeContent.match(codeBlockPattern)) {
+                console.log('codeBlockPattern', codeContent.match(codeBlockPattern));
                 codeContent = codeContent.match(codeBlockPattern)[1];
             }
             else {
                 codeContent = codeContent.match(codeMissingBlockPattern)[2];
             }
-
             navigator.clipboard.writeText(codeContent).then(() => {
                 targetButton.innerHTML = `${checkSvg} Copied`;
                 setTimeout(() => {
