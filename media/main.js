@@ -133,6 +133,8 @@
                     </div>`;
                 }
 
+                hljs.highlightAll()
+
                 if (message.done) {                    
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
 
