@@ -49,7 +49,7 @@
 			"activitybar": [
 				{
 					"id": "neural-chat-sideBar",
-					"title": "Copilot Chat",
+					"title": "NEURAL COPILOT",
 					"icon": "src/images/dark/leftBarDark.svg"
 				}
 			]
@@ -59,7 +59,7 @@
 				{
 					"type": "webview",
 					"id": "vscode-chatgpt.view",
-					"name": "Conversation window"
+					"name": "CHAT"
 				}
 			]
 		},

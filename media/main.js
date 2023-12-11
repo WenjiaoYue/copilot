@@ -113,7 +113,7 @@
                     console.log('existingMessage.innerHTML', existingMessage.innerHTML);
                     console.log('existingMessage.innerHTML.split("<pre")', existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre")));
                     
-                    if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {                        
+                    if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {                                                
                         updatedValue = existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre")) + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
                     } else if (codeBlockStart.test(updatedValue)) {
                         updatedValue = existingMessage.innerHTML + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${updatedValue}</code></pre>`;
