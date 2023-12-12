@@ -40,6 +40,8 @@
 
     const refreshSvg = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" data-license="isc-gnc" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>`;
 
+    let codeBuffer = ''
+    let codeStartFlag = false
     // Handle messages sent from the extension to the webview
     window.addEventListener("message", (event) => {
         const message = event.data;
@@ -90,45 +92,51 @@
                 break;
             case "addResponse":
                 let existingMessage = document.getElementById(message.id);
-                let updatedValue = "";
-                let codeBlockStart = /```([a-zA-Z]+)/g;
+                let updatedValue = codeBuffer + message.value.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
+                codeBuffer = ''
 
-                const unEscapeHtml = (unsafe) => {
-                    return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
-                };
-
-                if (!message.responseInMarkdown) {
-                    updatedValue = "```\r\n" + unEscapeHtml(message.value) + " \r\n ```";
-                } else {
-                    updatedValue = message.value.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
-                }
-
-
-                if (existingMessage) {
-                    let allCodeElements = existingMessage.querySelectorAll('code');
-                    let codeElement = allCodeElements[allCodeElements.length - 1];
-                   
-                    if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {                        
-                        updatedValue = existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre")) + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="python input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
-                    } else if (codeBlockStart.test(updatedValue)) {
-                        updatedValue = existingMessage.innerHTML + `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="python code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
-                    } else {
-                        updatedValue = existingMessage.innerHTML + updatedValue;
-                    }
- 
-                } else if (codeBlockStart.test(updatedValue)) {
-                    updatedValue = `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="python code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
-                }
-
-                if (existingMessage) {
-                    existingMessage.innerHTML = updatedValue;
-                } else {
+                if (!existingMessage) {
                     list.innerHTML +=
                         `<div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext text-xs">
                         <h2 class="mb-2 flex">${aiSvg}Neural Copilot</h2>
-                        <div class="result-streaming" id="${message.id}">${updatedValue}</div>
+                        <div class="result-streaming" id="${message.id}"></div>
                     </div>`;
+                    codeBuffer = updatedValue
+                    break;
                 }
+
+                if (!codeStartFlag) {
+                    if (updatedValue.match(/```\S+\s+/)) {
+                        // console.log(updatedValue)
+                        updatedValue = updatedValue.replace(/```(\S+)\s+/, '<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><span>$1</span><code class="python code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"></code></pre>')
+                        const pos = updatedValue.lastIndexOf('pre>') + 4
+                        codeBuffer = updatedValue.substring(pos)
+                        existingMessage.innerHTML += updatedValue.substring(0, pos)
+                        codeStartFlag = true
+                        break;
+                    } else if (updatedValue.match(/```/)) {
+                        codeBuffer = updatedValue
+                        break;
+                    }
+                }
+                
+                if (codeStartFlag) {
+                    let allCodeElements = existingMessage.querySelectorAll('code');
+                    let codeElement = allCodeElements[allCodeElements.length - 1]
+
+                    const pos = updatedValue.indexOf('```')
+                    if (pos != -1) {
+                        codeElement.innerHTML += updatedValue.substring(0, pos)
+                        codeBuffer = updatedValue.substring(pos + 3)
+                        codeStartFlag = false
+                        break;
+                    } else {
+                        codeElement.innerHTML += updatedValue
+                        break;
+                    }
+                }
+
+                existingMessage.innerHTML += updatedValue;
 
                 hljs.highlightAll();
 
