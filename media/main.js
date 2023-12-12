@@ -42,6 +42,9 @@
 
     let codeBuffer = ''
     let codeStartFlag = false
+    let inCode = false
+    let language = null
+
     // Handle messages sent from the extension to the webview
     window.addEventListener("message", (event) => {
         const message = event.data;
@@ -66,6 +69,8 @@
                 }
                 break;
             case "addQuestion":
+                inCode = false
+                language = null
                 list.classList.remove("hidden");
                 document.getElementById("introduction")?.classList?.add("hidden");
                 document.getElementById("conversation-list").classList.add("hidden");

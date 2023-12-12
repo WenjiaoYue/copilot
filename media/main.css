@@ -303,11 +303,6 @@ textarea::placeholder {
     vertical-align: baseline;
 }
 
-@media (max-height: 560px) {
-    .features-block {
-        display: none !important;
-    }
-}
 
 .hidden {
     display: hidden;
