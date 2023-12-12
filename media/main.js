@@ -103,18 +103,21 @@
                     updatedValue = message.value.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
                 }
 
+
                 if (existingMessage) {
-                    let codeElement = existingMessage.querySelector('code');
-                    if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {
-                        updatedValue = existingMessage.innerHTML.split("<pre")[0] + `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
+                    let allCodeElements = existingMessage.querySelectorAll('code');
+                    let codeElement = allCodeElements[allCodeElements.length - 1];
+                   
+                    if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {                        
+                        updatedValue = existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre")) + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded"><code class="python input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll bg-[#1f1f1f] rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
                     } else if (codeBlockStart.test(updatedValue)) {
-                        updatedValue = existingMessage.innerHTML + `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                        updatedValue = existingMessage.innerHTML + `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="python code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
                     } else {
                         updatedValue = existingMessage.innerHTML + updatedValue;
                     }
-
+ 
                 } else if (codeBlockStart.test(updatedValue)) {
-                    updatedValue = `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                    updatedValue = `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="python code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
                 }
 
                 if (existingMessage) {
