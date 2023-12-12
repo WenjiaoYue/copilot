@@ -40,6 +40,10 @@
 
     const refreshSvg = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" data-license="isc-gnc" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>`;
 
+    let inCode = false
+    
+    let language = null
+
     // Handle messages sent from the extension to the webview
     window.addEventListener("message", (event) => {
         const message = event.data;
@@ -64,6 +68,8 @@
                 }
                 break;
             case "addQuestion":
+                inCode = false
+                language = null
                 list.classList.remove("hidden");
                 document.getElementById("introduction")?.classList?.add("hidden");
                 document.getElementById("conversation-list").classList.add("hidden");
@@ -92,6 +98,7 @@
                 let existingMessage = document.getElementById(message.id);
                 let updatedValue = "";
                 let codeBlockStart = /```([a-zA-Z]+)/g;
+                let codeBlockEnd = /```/g;
 
                 const unEscapeHtml = (unsafe) => {
                     return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
@@ -103,21 +110,41 @@
                     updatedValue = message.value.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
                 }
 
+                function extractLanguage(updatedValue) {
+                    let language = updatedValue.match(codeBlockStart)[0].replace(codeBlockEnd, '');
+                    return language;
+                }
+
+                function createCodeBlock(updatedValue, language) {
+                    return `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="${language} code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                }
 
                 if (existingMessage) {
-                    let allCodeElements = existingMessage.querySelectorAll('code');
-                    let codeElement = allCodeElements[allCodeElements.length - 1];
-                   
-                    if (codeElement && (codeElement.textContent.match(/```/g) || []).length % 2 === 1) {                        
-                        updatedValue = existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre")) + `<pre class="my-2 input-background p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded border border-white "><code class="python input-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${codeElement.innerHTML}${updatedValue}</code></pre>`;
-                    } else if (codeBlockStart.test(updatedValue)) {
-                        updatedValue = existingMessage.innerHTML + `<pre class="code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded border border-white "><code class="python code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                    if (inCode) {
+                        if (codeBlockEnd.test(updatedValue)) {
+                            inCode = false;
+                            updatedValue = existingMessage.innerHTML
+                        } else {
+                            let allCodeElements = existingMessage.querySelectorAll('code');
+                            let codeElement = allCodeElements[allCodeElements.length - 1];
+                            beforeMessage = existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre"));
+                            updatedValue = beforeMessage + createCodeBlock(codeElement.innerHTML + updatedValue, language);
+                        }
                     } else {
-                        updatedValue = existingMessage.innerHTML + updatedValue;
+                        if (codeBlockStart.test(updatedValue)) {
+                            inCode = true;
+                            language = extractLanguage(updatedValue);
+                            updatedValue = existingMessage.innerHTML + createCodeBlock('', language);
+                        } else {
+                            updatedValue = existingMessage.innerHTML + updatedValue;
+                        }
                     }
- 
-                } else if (codeBlockStart.test(updatedValue)) {
-                    updatedValue = `<pre class="code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded border border-white "><code class="python code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                } else {
+                    if (codeBlockStart.test(updatedValue)) {
+                        inCode = true;
+                        let language = extractLanguage(updatedValue);
+                        updatedValue = createCodeBlock('', language);
+                    }
                 }
 
                 if (existingMessage) {
