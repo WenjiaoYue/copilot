@@ -360,7 +360,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 
 			this.sendMessage({
 				type: "addResponse",
-				value: this.response,
+				value: "",
 				done: true,
 				id: this.conversationId,
 				autoScroll: this.autoScroll,
