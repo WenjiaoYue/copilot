@@ -2,7 +2,6 @@ import pTimeout from "p-timeout";
 import { v4 as uuidv4 } from "uuid";
 import { createParser } from "eventsource-parser";
 import fetch from "node-fetch";
-import { fetchTest } from "./fetchContent";
 
 async function* streamAsyncIterable(stream: any) {
   const reader = stream.getReader();
@@ -116,80 +115,73 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     abortSignal = abortController.signal;
   }
 
+  const url = "https://talkingphoto.eglb.intel.com/v1/code_chat";
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+  const headers = {
+    Accept: "text/event-stream",
+    "Content-Type": "application/json"
+  };
 
+  const body: Body = {
+    "prompt": text,
+    "stream": true,
+    "max_new_tokens": 512
+  };
 
-   const test = await fetchTest();
-  console.log('test', test);
-  
+  if (conversationId) {
+    body.conversation_id = conversationId;
+  }
 
+  const result: ChatGPTResult = {
+    role: "assistant",
+    id: uuidv4(),
+    parentMessageId: messageId,
+    conversationId,
+    text: ""
+  };
 
-  // const url = "https://talkingphoto.eglb.intel.com/v1/code_chat";
-  // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-  // const headers = {
-  //   Accept: "text/event-stream",
-  //   "Content-Type": "application/json"
-  // };
+  const responseP: any = new Promise((resolve, reject) => {
+    fetchSSE(
+      url,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify(body),
+        signal: abortSignal,
+        onMessage: (data: string) => {
+          console.log('data', data.startsWith("b") ? data.slice(2, -1) : data);
+          if (data === "[DONE]") {
+            return resolve(result);
+          }
+          try {
+            result.text = data.startsWith("b") ? data.slice(2, -1) : data;
+            if (onProgress) {
+              onProgress(result);
+            }
+          } catch (err) {
+            console.log(`err: ${err}`);
+          }
+        }
+      },
+      fetch
+    ).catch((err) => {
+      const errMessageL = err.toString().toLowerCase();
+      if (result.text && (errMessageL === "error: typeerror: terminated" || errMessageL === "typeerror: terminated")) {
+        return resolve(result);
+      } else {
+        return reject(err);
+      }
+    });
+  });
 
-  // const body: Body = {
-  //   "prompt": text,
-  //   "stream": true,
-  //   "max_new_tokens": 512
-  // };
-
-  // if (conversationId) {
-  //   body.conversation_id = conversationId;
-  // }
-
-  // const result: ChatGPTResult = {
-  //   role: "assistant",
-  //   id: uuidv4(),
-  //   parentMessageId: messageId,
-  //   conversationId,
-  //   text: ""
-  // };
-
-  // const responseP: any = new Promise((resolve, reject) => {
-  //   fetchSSE(
-  //     url,
-  //     {
-  //       method: "POST",
-  //       headers,
-  //       body: JSON.stringify(body),
-  //       signal: abortSignal,
-  //       onMessage: (data: string) => {
-  //         console.log('data', data.startsWith("b") ? data.slice(2, -1) : data);
-  //         if (data === "[DONE]") {
-  //           return resolve(result);
-  //         }
-  //         try {
-  //           result.text = data.startsWith("b") ? data.slice(2, -1) : data;
-  //           if (onProgress) {
-  //             onProgress(result);
-  //           }
-  //         } catch (err) {
-  //           console.log(`err: ${err}`);
-  //         }
-  //       }
-  //     },
-  //     fetch
-  //   ).catch((err) => {
-  //     const errMessageL = err.toString().toLowerCase();
-  //     if (result.text && (errMessageL === "error: typeerror: terminated" || errMessageL === "typeerror: terminated")) {
-  //       return resolve(result);
-  //     } else {
-  //       return reject(err);
-  //     }
-  //   });
-  // });
-
-  // if (timeoutMs) {
-  //   if (abortController) {
-  //     responseP.cancel = () => {
-  //       abortController?.abort();
-  //     };
-  //   }
-  //   // return pTimeout(responseP, timeoutMs, "ChatGPT timed out waiting for response");
-  // } else {
-  //   return responseP;
-  // }
+  if (timeoutMs) {
+    if (abortController) {
+      responseP.cancel = () => {
+        abortController?.abort();
+      };
+    }
+    // return pTimeout(responseP, timeoutMs, "ChatGPT timed out waiting for response");
+  } else {
+    return responseP;
+  }
 }
