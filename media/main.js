@@ -3,7 +3,7 @@
 
     marked.setOptions({
         renderer: new marked.Renderer(),
-        highlight: function (code, _lang="python") {
+        highlight: function (code, _lang = "python") {
             return hljs.highlightAuto(code).value;
         },
         langPrefix: 'hljs language-',
@@ -41,7 +41,7 @@
     const refreshSvg = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" data-license="isc-gnc" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>`;
 
     let inCode = false
-    
+
     let language = null
 
     // Handle messages sent from the extension to the webview
@@ -159,11 +159,11 @@
 
                 hljs.highlightAll();
 
-                if (message.done) {                    
+                if (message.done) {
                     const preCodeList = list.lastChild.querySelectorAll("pre > code");
 
                     preCodeList.forEach((preCode) => {
-                
+
                         const buttonWrapper = document.createElement("no-export");
                         buttonWrapper.classList.add("code-actions-wrapper", "flex", "gap-3", "pr-2", "pb-1", "flex-wrap", "items-center", "justify-end", "rounded-t-lg",);
 
@@ -203,7 +203,7 @@
                 const messageValue = message.value || "An error occurred. If this issue persists please clear your session token with `ChatGPT: Reset session` command and/or restart your Visual Studio Code. If you still experience issues, it may be due to outage on https://openai.com services.";
 
                 list.innerHTML +=
-                `
+                    `
                 <div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext text-xs">
                         <h2 class="mb-2 flex">${aiSvg}Neural Copilot</h2>
                         <div class="result-streaming" id="${message.id}">${marked.parse(messageValue)}</div>
@@ -270,7 +270,6 @@
 
     document.addEventListener("click", (e) => {
         const targetButton = e.target.closest('button');
-        console.log("click", targetButton?.id);
         if (targetButton?.id === "more-button") {
             e.preventDefault();
             document.getElementById('chat-button-wrapper')?.classList.toggle("hidden");
@@ -375,15 +374,18 @@
 
         if (targetButton?.classList?.contains("code-element-ext")) {
             e.preventDefault();
-
-           
             // let codeContent = targetButton.parentElement?.previousElementSibling?.lastChild?.textContent;
-            let codeContent = targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig,"");
+            let codeContent = targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig, "");
             navigator.clipboard.writeText(codeContent).then(() => {
                 targetButton.innerHTML = `${checkSvg} Copied`;
                 setTimeout(() => {
                     targetButton.innerHTML = `${clipboardSvg} Copy`;
                 }, 1500);
+            });
+
+            vscode.postMessage({
+                type: "editCode",
+                value: codeContent
             });
 
             return;
