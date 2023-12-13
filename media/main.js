@@ -116,7 +116,7 @@
                 }
 
                 function createCodeBlock(updatedValue, language) {
-                    return `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block whitespace-pre-wrap overflow-x-scroll rounded"><code class="${language} code-background p-2 text-xs block whitespace-pre-wrap overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                    return `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block overflow-x-scroll rounded"><code class="${language} code-background p-2 text-xs block overflow-x-scroll rounded">${updatedValue}</code></pre>`;
                 }
 
                 if (existingMessage) {
@@ -376,17 +376,9 @@
         if (targetButton?.classList?.contains("code-element-ext")) {
             e.preventDefault();
 
-            let codeBlockPattern = /```[a-zA-Z]+\n([\s\S]*?)```/s;
-            let codeMissingBlockPattern = /```([a-zA-Z]+)\n([\s\S]*)$/s;
+           
             // let codeContent = targetButton.parentElement?.previousElementSibling?.lastChild?.textContent;
-            let codeContent = targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig,"")
-            if (codeContent.match(codeBlockPattern)) {
-                console.log('codeBlockPattern', codeContent.match(codeBlockPattern));
-                codeContent = codeContent.match(codeBlockPattern)[1];
-            }
-            else {
-                codeContent = codeContent.match(codeMissingBlockPattern)[2];
-            }
+            let codeContent = targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig,"");
             navigator.clipboard.writeText(codeContent).then(() => {
                 targetButton.innerHTML = `${checkSvg} Copied`;
                 setTimeout(() => {
