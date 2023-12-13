@@ -496,20 +496,20 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 			vscode.Uri.joinPath(this.context.extensionUri, "media", "main.css")
 		);
 
-		const vendorHighlightCss = webview.asWebviewUri(
+		const vendorPrismCss = webview.asWebviewUri(
 			vscode.Uri.joinPath(
 				this.context.extensionUri,
 				"media",
 				"vendor",
-				"highlight.min.css"
+				"prism.css"
 			)
 		);
-		const vendorHighlightJs = webview.asWebviewUri(
+		const vendorPrismJs = webview.asWebviewUri(
 			vscode.Uri.joinPath(
 				this.context.extensionUri,
 				"media",
 				"vendor",
-				"highlight.min.js"
+				"prism.js"
 			)
 		);
 		const vendorMarkedJs = webview.asWebviewUri(
@@ -546,8 +546,8 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" data-license="isc-gnc">
 
 				<link href="${stylesMainUri}" rel="stylesheet">
-				<link href="${vendorHighlightCss}" rel="stylesheet">
-				<script src="${vendorHighlightJs}"></script>
+				<link href="${vendorPrismCss}" rel="stylesheet">
+				<script src="${vendorPrismJs}"></script>
 				<script src="${vendorMarkedJs}"></script>
 				<script src="${vendorTailwindJs}"></script>
 				<script src="${vendorTurndownJs}"></script>
