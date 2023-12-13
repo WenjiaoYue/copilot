@@ -175,8 +175,8 @@
                         copyButton.classList.add("code-element-ext", "p-1", "pr-2", "flex", "items-center", "rounded-lg");
 
                         const insert = document.createElement("button");
-                        insert.title = "Insert the below code to the current file";
-                        insert.innerHTML = `${insertSvg} Insert`;
+                        insert.title = "Replace to the current file";
+                        insert.innerHTML = `${insertSvg} Replace`;
 
                         insert.classList.add("edit-element-ext", "p-1", "pr-2", "flex", "items-center", "rounded-lg");
 
@@ -185,7 +185,7 @@
                         newTab.innerHTML = `${plusSvg} New`;
 
                         newTab.classList.add("new-code-element-ext", "p-1", "pr-2", "flex", "items-center", "rounded-lg");
-                        buttonWrapper.append(copyButton);
+                        buttonWrapper.append(copyButton, insert);
                        
                         preCode.parentNode.append(buttonWrapper);
                     });
@@ -393,7 +393,7 @@
             e.preventDefault();
             vscode.postMessage({
                 type: "editCode",
-                value: targetButton.parentElement?.nextElementSibling?.lastChild?.textContent,
+                value: targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig,"")
             });
 
             return;
