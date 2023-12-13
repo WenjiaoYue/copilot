@@ -28,8 +28,6 @@ function updateMenuHint(isExchangeMode: boolean) {
 
 
 export function activate(context: vscode.ExtensionContext) {
-
-
     const view = vscode.window.registerWebviewViewProvider(
         "vscode-chatgpt.view",
         new ChatGptViewProvider(context),
@@ -47,7 +45,13 @@ export function activate(context: vscode.ExtensionContext) {
         updateMenuHint(mode.value);
     });
 
-    context.subscriptions.push(view, disposable);
+    let paste = vscode.commands.registerCommand('NeuralCopilot.paste', () => {
+        // 执行粘贴命令
+        vscode.commands.executeCommand('editor.action.clipboardPasteAction');
+    });
+
+
+    context.subscriptions.push(view, disposable, paste);
 
     const provider: vscode.CompletionItemProvider | any = {
         provideInlineCompletionItems: async (document: any, position: any, context: any, token: any) => {
