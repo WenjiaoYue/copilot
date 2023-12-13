@@ -97,10 +97,60 @@
                 break;
             case "addResponse":
                 let existingMessage = document.getElementById(message.id);
-                let updatedValue = codeBuffer + message.value.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
-                codeBuffer = ''
+                let updatedValue = "";
+                let codeBlockStart = /```([a-zA-Z]+)/g;
+                let codeBlockEnd = /```/g;
 
-                if (!existingMessage) {
+                const unEscapeHtml = (unsafe) => {
+                    return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+                };
+
+                if (!message.responseInMarkdown) {
+                    updatedValue = "```\r\n" + unEscapeHtml(message.value) + " \r\n ```";
+                } else {
+                    updatedValue = message.value.replace(/\\r\\n/g, '\n').replace(/\\n/g, '\n');
+                }
+
+                function extractLanguage(updatedValue) {
+                    let language = updatedValue.match(codeBlockStart)[0].replace(codeBlockEnd, '');
+                    return language;
+                }
+
+                function createCodeBlock(updatedValue, language) {
+                    return `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block overflow-x-scroll rounded"><code class="${language} code-background p-2 text-xs block overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                }
+
+                if (existingMessage) {
+                    if (inCode) {
+                        if (codeBlockEnd.test(updatedValue)) {
+                            inCode = false;
+                            updatedValue = existingMessage.innerHTML
+                        } else {
+                            let allCodeElements = existingMessage.querySelectorAll('code');
+                            let codeElement = allCodeElements[allCodeElements.length - 1];
+                            beforeMessage = existingMessage.innerHTML.substring(0, existingMessage.innerHTML.lastIndexOf("<pre"));
+                            updatedValue = beforeMessage + createCodeBlock(codeElement.innerHTML + updatedValue, language);
+                        }
+                    } else {
+                        if (codeBlockStart.test(updatedValue)) {
+                            inCode = true;
+                            language = extractLanguage(updatedValue);
+                            updatedValue = existingMessage.innerHTML + createCodeBlock('', language);
+                        } else {
+                            updatedValue = existingMessage.innerHTML + updatedValue;
+                        }
+                    }
+                } else {
+                    if (codeBlockStart.test(updatedValue)) {
+                        inCode = true;
+                        let language = extractLanguage(updatedValue);
+                        updatedValue = createCodeBlock('', language);
+                    }
+                }
+
+                if (existingMessage) {
+                    existingMessage.innerHTML = updatedValue;
+                } else {
                     list.innerHTML +=
                         `<div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext text-xs">
                         <h2 class="mb-2 flex">${aiSvg}Neural Copilot</h2>
@@ -362,17 +412,9 @@
         if (targetButton?.classList?.contains("code-element-ext")) {
             e.preventDefault();
 
-            let codeBlockPattern = /```[a-zA-Z]+\n([\s\S]*?)```/s;
-            let codeMissingBlockPattern = /```([a-zA-Z]+)\n([\s\S]*)$/s;
+           
             // let codeContent = targetButton.parentElement?.previousElementSibling?.lastChild?.textContent;
-            let codeContent = targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig,"")
-            if (codeContent.match(codeBlockPattern)) {
-                console.log('codeBlockPattern', codeContent.match(codeBlockPattern));
-                codeContent = codeContent.match(codeBlockPattern)[1];
-            }
-            else {
-                codeContent = codeContent.match(codeMissingBlockPattern)[2];
-            }
+            let codeContent = targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig,"");
             navigator.clipboard.writeText(codeContent).then(() => {
                 targetButton.innerHTML = `${checkSvg} Copied`;
                 setTimeout(() => {
