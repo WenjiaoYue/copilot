@@ -116,7 +116,7 @@
                 }
 
                 function createCodeBlock(updatedValue, language) {
-                    return `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block overflow-x-scroll rounded"><code class="${language} code-background p-2 text-xs block overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                    return `<pre class="border border-white code-background my-2 p-2 pb-0 text-xs block overflow-x-scroll rounded  whitespace-pre-wrap"><code class="${language} code-background p-2 text-xs block overflow-x-scroll rounded">${updatedValue}</code></pre>`;
                 }
 
                 if (existingMessage) {
