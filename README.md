@@ -5,8 +5,8 @@
 Neural Copilot is a VSCode plugin that serves as your AI programming assistant, which supports the following features:
 - 😊 Easily switch between high quality mode and fast mode according to your needs.
 - 📝 Autocomplete-style code suggestions as you write code.
-- 💬 Get streaming answers to your prompts in sidebar conversation window.
-- ➡️ Copy code from conversation with just one click, NeuralChat is suggesting right into your editor.
+- 💬 Get properly highlighted code and streaming answers to your prompts in sidebar conversation window.
+- ➡️ Copy or replace code from conversation with just one click, NeuralChat is suggesting right into your editor.
 ---
 
 Table of contents:
@@ -82,13 +82,14 @@ You can start a conversation with the AI programming assistant by clicking on th
 
 Then you can see the conversation window on the left, where you can chat with AI assistant:
 
-<img src="https://i.imgur.com/M0yqZ1H.png" alt="drawing" width="450"/>
+<img src="https://i.imgur.com/3rRue6S.png" alt="drawing" width="450"/>
 
-There are 3 areas worth noting:
+There are 4 areas worth noting:
 
 1. Enter and submit your question
-2. Answers from AI assistant (streaming output)
-3. Copy code with one click
+2. Your pevious questions
+3. Answers from AI assistant (Code will be highlighted properly according to the programming language it is written in, also support streaming output)
+4. Copy or replace code with one click (Note that you need to select the code in the editor first and then click "replace", otherwise the code will be inserted)
 
 You can also select the code in the editor and ask AI assistant question about it.
 
@@ -99,4 +100,4 @@ For example:
 
 2. Ask question and get answer
 
-<img src="https://i.imgur.com/zqpR6ZY.png" alt="drawing" width="450"/>
+<img src="https://i.imgur.com/nC1ZA1b.png" alt="drawing" width="450"/>
