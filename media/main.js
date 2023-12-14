@@ -382,12 +382,7 @@
                     targetButton.innerHTML = `${clipboardSvg} Copy`;
                 }, 1500);
             });
-
-            vscode.postMessage({
-                type: "editCode",
-                value: codeContent
-            });
-
+            
             return;
         }
 

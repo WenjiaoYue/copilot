@@ -278,7 +278,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		let final_content = "";
 		prompt = `${prompt}`;
 		if (highlighted) {
-			final_content = `${prompt}  \r\n\`\`\`${editorLanguage}\n ${highlighted}\r\n\`\`\` `;
+			final_content = `\r\n\`\`\`${editorLanguage}\n ${highlighted}\r\n\`\`\` ${prompt} `;
 		} else {
 			final_content = `${prompt}`;
 
