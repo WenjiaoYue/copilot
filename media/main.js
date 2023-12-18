@@ -136,7 +136,7 @@
                         codeStartFlag = false
                     } else {
                         codeElement.innerHTML += updatedValue
-                        break;
+                        if (!message.done) break;
                     }
                 }
 
