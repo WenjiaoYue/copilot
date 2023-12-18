@@ -132,9 +132,8 @@
                     const pos = updatedValue.indexOf('```')
                     if (pos != -1) {
                         codeElement.innerHTML += updatedValue.substring(0, pos)
-                        codeBuffer = updatedValue.substring(pos + 3)
+                        updatedValue = updatedValue.substring(pos + 3)
                         codeStartFlag = false
-                        break;
                     } else {
                         codeElement.innerHTML += updatedValue
                         break;
@@ -362,17 +361,8 @@
         if (targetButton?.classList?.contains("code-element-ext")) {
             e.preventDefault();
 
-            let codeBlockPattern = /```[a-zA-Z]+\n([\s\S]*?)```/s;
-            let codeMissingBlockPattern = /```([a-zA-Z]+)\n([\s\S]*)$/s;
             // let codeContent = targetButton.parentElement?.previousElementSibling?.lastChild?.textContent;
             let codeContent = targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig,"")
-            if (codeContent.match(codeBlockPattern)) {
-                console.log('codeBlockPattern', codeContent.match(codeBlockPattern));
-                codeContent = codeContent.match(codeBlockPattern)[1];
-            }
-            else {
-                codeContent = codeContent.match(codeMissingBlockPattern)[2];
-            }
             navigator.clipboard.writeText(codeContent).then(() => {
                 targetButton.innerHTML = `${checkSvg} Copied`;
                 setTimeout(() => {
