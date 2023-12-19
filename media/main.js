@@ -57,10 +57,13 @@
                     document.getElementById("in-progress").classList.remove("hidden");
                     document.getElementById("question-input").setAttribute("disabled", true);
                     document.getElementById("question-input-buttons").classList.add("hidden");
+                    document.getElementById("clear-button").classList.add("hidden");
                 } else {
                     document.getElementById("in-progress").classList.add("hidden");
                     document.getElementById("question-input").removeAttribute("disabled");
                     document.getElementById("question-input-buttons").classList.remove("hidden");
+                    document.getElementById("clear-button").classList.remove("hidden");
+
                 }
                 break;
             case "addQuestion":
@@ -238,6 +241,7 @@
         document.getElementById("qa-list").innerHTML = "";
 
         document.getElementById("introduction")?.classList?.remove("hidden");
+        document.getElementById("clear-button").classList.add("hidden");
 
         vscode.postMessage({
             type: "clearConversation"
