@@ -3,10 +3,6 @@
 
     marked.setOptions({
         renderer: new marked.Renderer(),
-        highlight: function (code, _lang = "python") {
-            return hljs.highlightAuto(code).value;
-        },
-        langPrefix: 'hljs language-',
         pedantic: false,
         gfm: true,
         breaks: true,
