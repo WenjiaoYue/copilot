@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 const CSConfig = {
     SEARCH_PATTERN: /(\/\/|#|--|<!--|\/\*)+(.+)(-->|\*\/)*/,
+    MULTILINE_END_PATTERN: /(.*)(-->|\*\/)$/
 };
 
 export const mode = { value: true };  

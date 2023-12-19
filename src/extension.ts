@@ -55,14 +55,19 @@ export function activate(context: vscode.ExtensionContext) {
 
     const provider: vscode.CompletionItemProvider | any = {
         provideInlineCompletionItems: async (document: any, position: any, context: any, token: any) => {
-            const textBeforeCursor = document.getText(
+            const inLineTextBeforeCursor = document.getText(
                 new vscode.Range(position.with(undefined, 0), position)
             );
 
-            const match = matchSearchPhrase(textBeforeCursor);
-            let items: any[] = [];
+            const allTextBeforeCursor = document.getText(
+                new vscode.Range(new vscode.Position(0, 0), position)
+            );
 
+            const match = matchSearchPhrase(inLineTextBeforeCursor, allTextBeforeCursor);
+            let items: any[] = [];
+            
             if (match) {
+                console.log(match)
                 let rs;
                 try {
                     rs = await search(match.searchPhrase);
