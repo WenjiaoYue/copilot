@@ -116,7 +116,9 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     abortSignal = abortController.signal;
   }
 
-  const url = getConfig().settings.hqModeUrl;
+  const url = getConfig().settings.codeChatUrl;
+  console.log('codeChatUrl', url);
+  
   // const url = "https://64d7da36-ccd1-4b5e-93ac-55e9ceaa8b0e.mock.pstmn.io/v1/code_generation"
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
   const headers = {

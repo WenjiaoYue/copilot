@@ -11,6 +11,7 @@ export function getSearchURL(site: string, keyword: string) {
 
 type IConfig = {
     settings: {
+        codeChatUrl: string;
         hqModeUrl: string,
         fastModeUrl: string,
         maxResults: number
@@ -24,6 +25,7 @@ export function getConfig() {
         settings: {
             hqModeUrl: config.settings.sites.highQuality,
             fastModeUrl: config.settings.sites.fastMode,
+            codeChatUrl:  config.settings.sites.codeChat,
             maxResults: config.settings.maxResults
         }
     } as IConfig;
@@ -35,6 +37,7 @@ export const URLConfig = (() => {
     return {
         "highQuality": config.settings.sites.highQuality as string,
         "fastMode": config.settings.sites.fastMode as string,
+        "codeChatUrl": config.settings.sites.codeChat as string,
     };
 })();
 
