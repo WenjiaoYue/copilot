@@ -62,8 +62,6 @@
                     document.getElementById("in-progress").classList.add("hidden");
                     document.getElementById("question-input").removeAttribute("disabled");
                     document.getElementById("question-input-buttons").classList.remove("hidden");
-                    document.getElementById("clear-button").classList.remove("hidden");
-
                 }
                 break;
             case "addQuestion":
@@ -191,6 +189,7 @@
 
                     existingMessage = document.getElementById(message.id);
                     existingMessage.classList.remove("result-streaming");
+                    document.getElementById("clear-button").classList.remove("hidden");
                 }
 
                 if (message.autoScroll) {
