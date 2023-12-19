@@ -389,7 +389,7 @@
             e.preventDefault();
             vscode.postMessage({
                 type: "editCode",
-                value: targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig,"")
+                value: targetButton.parentElement?.previousElementSibling.innerText
             });
 
             return;
