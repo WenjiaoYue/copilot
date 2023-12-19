@@ -2,6 +2,7 @@ import pTimeout from "p-timeout";
 import { v4 as uuidv4 } from "uuid";
 import { createParser } from "eventsource-parser";
 import fetch from "node-fetch";
+import { getConfig } from "../config";
 
 async function* streamAsyncIterable(stream: any) {
   const reader = stream.getReader();
@@ -115,7 +116,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     abortSignal = abortController.signal;
   }
 
-  const url = "https://talkingphoto.eglb.intel.com/v1/code_chat";
+  const url = getConfig().settings.hqModeUrl;
   // const url = "https://64d7da36-ccd1-4b5e-93ac-55e9ceaa8b0e.mock.pstmn.io/v1/code_generation"
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
   const headers = {

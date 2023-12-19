@@ -71,7 +71,7 @@
 					"title": "High Quality",
 					"description": "High Quality URL",
 					"type": "string",
-					"default": "https://talkingphoto.eglb.intel.com/v1/code_generation"
+					"default": "https://talkingphoto.eglb.intel.com/v1/code_chat"
 				},
 				"neuralCopilot.settings.sites.fastMode": {
 					"title": "Fast Mode",

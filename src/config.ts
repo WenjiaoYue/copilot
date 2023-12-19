@@ -11,7 +11,8 @@ export function getSearchURL(site: string, keyword: string) {
 
 type IConfig = {
     settings: {
-        sites: { [name: string]: boolean },
+        hqModeUrl: string,
+        fastModeUrl: string,
         maxResults: number
     }
 }
@@ -19,14 +20,10 @@ type IConfig = {
 export function getConfig() {
     const config = vscode.workspace.getConfiguration("neuralCopilot");    
 
-    const sites = {
-        "stackoverflow.com": true,
-        "gist.github.com": false
-    };
-
     return {
         settings: {
-            sites,
+            hqModeUrl: config.settings.sites.highQuality,
+            fastModeUrl: config.settings.sites.fastMode,
             maxResults: config.settings.maxResults
         }
     } as IConfig;
