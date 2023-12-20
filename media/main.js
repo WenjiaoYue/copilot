@@ -3,10 +3,6 @@
 
     marked.setOptions({
         renderer: new marked.Renderer(),
-        highlight: function (code, _lang = "python") {
-            return hljs.highlightAuto(code).value;
-        },
-        langPrefix: 'hljs language-',
         pedantic: false,
         gfm: true,
         breaks: true,
@@ -61,6 +57,7 @@
                     document.getElementById("in-progress").classList.remove("hidden");
                     document.getElementById("question-input").setAttribute("disabled", true);
                     document.getElementById("question-input-buttons").classList.add("hidden");
+                    document.getElementById("clear-button").classList.add("hidden");
                 } else {
                     document.getElementById("in-progress").classList.add("hidden");
                     document.getElementById("question-input").removeAttribute("disabled");
@@ -192,6 +189,7 @@
 
                     existingMessage = document.getElementById(message.id);
                     existingMessage.classList.remove("result-streaming");
+                    document.getElementById("clear-button").classList.remove("hidden");
                 }
 
                 if (message.autoScroll) {
@@ -242,6 +240,7 @@
         document.getElementById("qa-list").innerHTML = "";
 
         document.getElementById("introduction")?.classList?.remove("hidden");
+        document.getElementById("clear-button").classList.add("hidden");
 
         vscode.postMessage({
             type: "clearConversation"
@@ -390,7 +389,7 @@
             e.preventDefault();
             vscode.postMessage({
                 type: "editCode",
-                value: targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig,"")
+                value: targetButton.parentElement?.previousElementSibling.innerText
             });
 
             return;

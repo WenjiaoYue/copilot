@@ -71,13 +71,19 @@
 					"title": "High Quality",
 					"description": "High Quality URL",
 					"type": "string",
-					"default": "https://talkingphoto.eglb.intel.com/v1/code_chat"
+					"default": "https://talkingphoto.eglb.intel.com/v1/code_generation"
 				},
 				"neuralCopilot.settings.sites.fastMode": {
 					"title": "Fast Mode",
 					"description": "Fast Mode URL",
 					"type": "string",
 					"default": "http://10.239.158.137:8000/v1/code_generation"
+				},
+				"neuralCopilot.settings.sites.codeChat": {
+					"title": "Code Chat",
+					"description": "Code Chat URL",
+					"type": "string",
+					"default": "https://talkingphoto.eglb.intel.com/v1/code_chat"
 				},
 				"neuralCopilot.settings.maxResults": {
 					"type": "integer",

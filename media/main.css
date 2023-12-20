@@ -230,7 +230,7 @@ textarea::placeholder {
 }
 
 .textarea-wrapper::after {
-    content: attr(data-replicated-value) " ";
+    content: " ";
     white-space: pre-wrap;
     visibility: hidden;
 }

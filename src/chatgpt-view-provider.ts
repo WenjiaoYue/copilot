@@ -584,8 +584,14 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 						<button id="stop-button" class="btn btn-primary flex items-end ">
 							</button>
 					</div>
-
+					
+					<div class="ml-4">
+					<button class="text-xs flex gap-2 items-center justify-start p-2 hidden" id="clear-button">
+					<svg t="1702967489372"  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" class="w-3 h-3"><path d="M928 256a32 32 0 0 1 3.744 63.776L928 320h-64v540.448c0 51.616-33.792 96.256-80.128 99.392l-5.216 0.16H245.344c-47.264 0-82.72-42.784-85.216-93.856L160 860.48V320H96a32 32 0 0 1-3.744-63.776L96 256h832z m-128 64H224v540.448c0 19.552 9.856 33.44 19.2 35.328l2.144 0.224h533.312c9.216 0 19.712-12.48 21.184-31.136l0.16-4.416V320z m-192 96a32 32 0 0 1 31.776 28.256L640 448v352a32 32 0 0 1-63.776 3.744L576 800V448a32 32 0 0 1 32-32z m-192 0a32 32 0 0 1 31.776 28.256L448 448v352a32 32 0 0 1-63.776 3.744L384 800V448a32 32 0 0 1 32-32z m257.632-320a32 32 0 0 1 3.744 63.776L673.6 160H352a32 32 0 0 1-3.744-63.776L352 96h321.632z" fill="#ffffff" p-id="5044"></path></svg>
+					Clear Chat</button>	
+				</div>
 					<div class="p-4 flex items-center pt-2" data-license="isc-gnc">
+					
 						<div class="flex-1 textarea-wrapper">
 							<textarea
 								class="border border-white"
@@ -595,7 +601,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 								placeholder="Ask a question ..."
 								onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
 						</div>
-						
+					
 						<div id="question-input-buttons" class="right-6 absolute p-0.5 ml-5 flex items-center gap-2">
 							<button id="ask-button" title="Submit prompt" class="ask-button rounded-lg p-0.5">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>

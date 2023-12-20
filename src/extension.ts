@@ -46,7 +46,6 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     let paste = vscode.commands.registerCommand('NeuralCopilot.paste', () => {
-        // 执行粘贴命令
         vscode.commands.executeCommand('editor.action.clipboardPasteAction');
     });
 
