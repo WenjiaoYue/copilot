@@ -54,15 +54,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     const provider: vscode.CompletionItemProvider | any = {
         provideInlineCompletionItems: async (document: any, position: any, context: any, token: any) => {
-            const inLineTextBeforeCursor = document.getText(
-                new vscode.Range(position.with(undefined, 0), position)
-            );
-
-            const allTextBeforeCursor = document.getText(
-                new vscode.Range(new vscode.Position(0, 0), position)
-            );
-
-            const match = matchSearchPhrase(inLineTextBeforeCursor, allTextBeforeCursor);
+            const match = matchSearchPhrase(document, position);
             let items: any[] = [];
             
             if (match) {
@@ -79,7 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
                             return {
                                 text: output,
                                 insertText: output,
-                                range: new vscode.Range(position.translate(0, output.length), position)
+                                range: new vscode.Range(match.insertPosition.translate(0, output.length), match.insertPosition)
                             };
                         });
                     }
