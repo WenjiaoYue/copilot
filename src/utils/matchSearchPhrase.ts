@@ -1,3 +1,4 @@
+import { log } from "console";
 import CSConfig, { mode } from "../config";
 import { Position, TextDocument, window } from "vscode";
 
@@ -24,10 +25,39 @@ export function matchSearchPhrase(
         return cursorPosition.isAfterOrEqual(document.positionAt(match.index!)) && 
                cursorPosition.isBeforeOrEqual(document.positionAt(match.index! + match[0].length));
     });
+    let singleSearchContent = "";
+    
 
     if (foundMatch) {
         const filteredArray = foundMatch.filter(item => item !== null && item !== undefined && item !== '');
-        const [fullMatch, commentSyntax, searchPhrase] = filteredArray;
+        const [fullMatch, commentSyntax, _searchPhrase] = filteredArray;
+
+        // if singleLine
+        if (foundMatch[11]) {
+            // Extract the content of the comment  
+            let currentLine = cursorPosition.line;
+            singleSearchContent += _searchPhrase;
+             
+            while (currentLine > 0) {
+                const previousLine = currentLine - 1;
+                const previousLineText = document.lineAt(previousLine).text; 
+
+                if (previousLineText.trim().startsWith(foundMatch[11])) {
+                    const previousLineExtract = previousLineText.replace(/\/\/|#/g, '').trim();
+                    console.log('previousLineExtract', previousLineExtract);
+                    singleSearchContent = previousLineExtract + ' ' + singleSearchContent;
+
+                    currentLine--;
+                } else {
+                    
+                    break;
+                }
+            }
+        }
+        const searchPhrase = singleSearchContent !== "" ? singleSearchContent : _searchPhrase;
+        console.log('searchPhrase', searchPhrase);
+        
+      
         return {
             commentSyntax,
             searchPhrase,
