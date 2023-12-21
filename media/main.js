@@ -374,7 +374,7 @@
         if (targetButton?.classList?.contains("code-element-ext")) {
             e.preventDefault();
             // let codeContent = targetButton.parentElement?.previousElementSibling?.lastChild?.textContent;
-            let codeContent = targetButton.parentElement?.previousElementSibling.innerHTML.replace(/(<([^>]+)>)/ig, "");
+            let codeContent = targetButton.parentElement?.previousElementSibling.innerText;
             navigator.clipboard.writeText(codeContent).then(() => {
                 targetButton.innerHTML = `${checkSvg} Copied`;
                 setTimeout(() => {
