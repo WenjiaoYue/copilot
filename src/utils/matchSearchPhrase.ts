@@ -26,7 +26,8 @@ export function matchSearchPhrase(
     });
 
     if (foundMatch) {
-        const [fullMatch, commentSyntax, searchPhrase] = foundMatch;
+        const filteredArray = foundMatch.filter(item => item !== null && item !== undefined && item !== '');
+        const [fullMatch, commentSyntax, searchPhrase] = filteredArray;
         return {
             commentSyntax,
             searchPhrase,

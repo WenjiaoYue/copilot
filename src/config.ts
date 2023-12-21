@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 const CSConfig = {
-    SEARCH_PATTERN: /(\/\*)([\s\S]*?)\*\/|(<!--)([\s\S]*?)-->|(`{3})([\s\S]*?)`{3}|(\/\/)([^\n]*)|(#)([^\n]*)/g
+    SEARCH_PATTERN: /(\/\*)([\s\S]*?)\*\/|(<!--)([\s\S]*?)-->|(`{3})([\s\S]*?)`{3}|(\/\/)([^\n]*)|(#)([^\n]*)|'''([\s\S]*?)'''|"""([\s\S]*?)"""/g
 };
 
 export const mode = { value: true };  
