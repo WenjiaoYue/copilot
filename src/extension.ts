@@ -71,7 +71,7 @@ export function activate(context: vscode.ExtensionContext) {
                             return {
                                 text: output,
                                 insertText: output,
-                                range: new vscode.Range(match.insertPosition.translate(0, output.length), match.insertPosition)
+                                range: new vscode.Range(position.translate(0, output.length), position)
                             };
                         });
                     }

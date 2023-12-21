@@ -4,7 +4,7 @@ import { Position, TextDocument, window } from "vscode";
 type SearchMatchResult = {
     commentSyntax: string;
     searchPhrase: string;
-    insertPosition: Position
+    // insertPosition: Position
 };
 
 /**
@@ -31,8 +31,8 @@ export function matchSearchPhrase(
         return {
             commentSyntax,
             searchPhrase,
-            insertPosition: document.positionAt(foundMatch.index! + foundMatch[0].length)
-        }
+            // insertPosition: document.positionAt(foundMatch.index! + foundMatch[0].length)
+        };
     }
 
     return undefined;
