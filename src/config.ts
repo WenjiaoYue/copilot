@@ -1,7 +1,20 @@
 import * as vscode from 'vscode';
 
 const CSConfig = {
-    SEARCH_PATTERN: /(\/\*)([\s\S]*?)\*\/\s+|(<!--)([\s\S]*?)-->\s+|('{3})([\s\S]*?)'{3}\s+|("{3})([\s\S]*?)"{3}\s+|(\/\/)([^\n]*)|(#)([^\n]*)/g
+    // TypeScript, JavaScript, C++, Java, Go, Swift, Kotlin, Rust, C, C# comments (//, /* */)
+    STAR_PATTERN: /(\/\/)([^\n]*)|(\/\*)([\s\S]*?)\*\/\s*/g,
+
+    // Docker, Bash, ruby comments (#)
+    POUND_PATTERN: /(#)([^\n]*)/g,
+
+    // Python comments (#, ''' ''' or """ """)
+    PYTHON_PATTERN:  /(#)([^\n]*)|('{3})([\s\S]*?)'{3}\s*|("{3})([\s\S]*?)"{3}\s*/g,
+
+     // CSS comments (/* */)
+    CSS_PATTERN: /(\/\*)([\s\S]*?)\*\/\s*/g,
+
+     // HTML comments (<!-- -->)
+    HTML_PATTERN: /(<!--)([\s\S]*?)-->\s*/g,
 };
 
 export const mode = { value: true };  

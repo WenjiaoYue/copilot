@@ -8,6 +8,32 @@ type SearchMatchResult = {
     // insertPosition: Position
 };
 
+function matchLanguageId(languageId: string | undefined): string {
+    const languageMap = new Map<string, string>([
+        ["typescript", "STAR_PATTERN"],
+        ["javascript", "STAR_PATTERN"],
+        ["cpp", "STAR_PATTERN"],
+        ["java", "STAR_PATTERN"],
+        ["go", "STAR_PATTERN"],
+        ["swift", "STAR_PATTERN"],
+        ["kotlin", "STAR_PATTERN"],
+        ["rust", "STAR_PATTERN"],
+        ["c", "STAR_PATTERN"],
+        ["csharp", "STAR_PATTERN"],
+        ["dockerfile", "POUND_PATTERN"],
+        ["bash", "POUND_PATTERN"],
+        ["ruby", "POUND_PATTERN"],
+        ["python", "PYTHON_PATTERN"],
+        ["css", "CSS_PATTERN"],
+        ["html", "HTML_PATTERN"],
+    ]);
+
+    const defaultResult = "No match found";
+
+    return languageMap.get(languageId) || defaultResult;
+}
+
+
 /**
  * Match the giving string with search pattern
  * @param {string} document
@@ -21,19 +47,21 @@ export function matchSearchPhrase(
     const languageId = window.activeTextEditor?.document.languageId;
     console.log("language:" + languageId);
 
-    const foundMatch = [...document.getText().matchAll(CSConfig.SEARCH_PATTERN)].find(match => {
+    const search_pattern = matchLanguageId(languageId);
+    
+
+    const foundMatch = [...document.getText().matchAll(CSConfig[search_pattern])].find(match => {        
         return cursorPosition.isAfterOrEqual(document.positionAt(match.index!)) && 
                cursorPosition.isBeforeOrEqual(document.positionAt(match.index! + match[0].length));
     });
-    let singleSearchContent = "";
-    
+    let singleSearchContent = "";    
 
     if (foundMatch) {
         const filteredArray = foundMatch.filter(item => item !== null && item !== undefined && item !== '');
         const [fullMatch, commentSyntax, _searchPhrase] = filteredArray;
 
         // if singleLine
-        if (foundMatch[11]) {
+        if (foundMatch[1]) {
             // Extract the content of the comment  
             let currentLine = cursorPosition.line;
             singleSearchContent += _searchPhrase;
@@ -42,7 +70,7 @@ export function matchSearchPhrase(
                 const previousLine = currentLine - 1;
                 const previousLineText = document.lineAt(previousLine).text; 
 
-                if (previousLineText.trim().startsWith(foundMatch[11])) {
+                if (previousLineText.trim().startsWith(foundMatch[1])) {
                     const previousLineExtract = previousLineText.replace(/\/\/|#/g, '').trim();
                     console.log('previousLineExtract', previousLineExtract);
                     singleSearchContent = previousLineExtract + ' ' + singleSearchContent;
