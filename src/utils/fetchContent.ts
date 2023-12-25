@@ -17,5 +17,7 @@ export async function fetchTextContent(keyword: string): Promise<string> {
         }),
     });    
     const rs_json = await rs.json();
+    console.log('rs_json.response', rs_json.response);
+    
     return rs_json.response;
 }

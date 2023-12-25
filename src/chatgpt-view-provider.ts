@@ -291,7 +291,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 		const question = this.processQuestion(final_content, options.code, options.language);
 		const responseInMarkdown = !this.isCodexModel;
 
-		// If the ChatGPT view is not in focus/visible; focus on it to render Q&A
+		// If the Neural Copilot view is not in focus/visible; focus on it to render Q&A
 		if (this.webView == null) {
 			vscode.commands.executeCommand("vscode-chatgpt.view.focus");
 		} else {
@@ -344,7 +344,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 				// this.response = this.response + " \r\n ```\r\n";
 				vscode.window
 					.showInformationMessage(
-						"It looks like ChatGPT didn't complete their answer for your coding question. You can ask it to continue and combine the answers.",
+						"It looks like Neural Copilot didn't complete their answer for your coding question. You can ask it to continue and combine the answers.",
 						"Continue and combine answers"
 					)
 					.then(async (choice) => {
@@ -370,7 +370,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 			if (this.subscribeToResponse) {
 				vscode.window
 					.showInformationMessage(
-						"ChatGPT responded to your question.",
+						"Neural Copilot responded to your question.",
 						"Open conversation"
 					)
 					.then(async () => {
@@ -417,7 +417,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 				message =
 					"Your token has expired. Please try authenticating again. (HTTP 403 Forbidden)";
 			} else if (error.statusCode === 404) {
-				message = `Your method: '${this.loginMethod}' and your model: '${this.model}' may be incompatible or you may have exhausted your ChatGPT subscription allowance. (HTTP 404 Not Found)`;
+				message = `Your method: '${this.loginMethod}' and your model: '${this.model}' may be incompatible or you may have exhausted your Neural Copilot subscription allowance. (HTTP 404 Not Found)`;
 			} else if (error.statusCode === 429) {
 				message =
 					"Too many requests try again later. (HTTP 429 Too Many Requests) Potential reasons: \r\n 1. You exceeded your current quota, please check your plan and billing details\r\n 2. You are sending requests too quickly \r\n 3. The engine is currently overloaded, please try again later. \r\n See https://platform.openai.com/docs/guides/error-codes for more details.";
@@ -562,7 +562,7 @@ export default class ChatGptViewProvider implements vscode.WebviewViewProvider {
 								</svg>
 								<h2>Features</h2>
 								<ul class="flex flex-col gap-3.5 text-xs">
-									<li class="features-li w-full border border-zinc-700 p-3 rounded-md">Access to your ChatGPT conversation</li>
+									<li class="features-li w-full border border-zinc-700 p-3 rounded-md">Access to your Neural Copilot conversation</li>
 									<li class="features-li w-full border border-zinc-700 p-3 rounded-md">Improve your code, add tests & find bugs</li>
 									<li class="features-li w-full border border-zinc-700 p-3 rounded-md">Replace your code automatically</li>
 								</ul>
