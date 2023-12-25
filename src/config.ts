@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-const CSConfig = {
+const CSConfig: {[index: string]: RegExp} = {
     // TypeScript, JavaScript, C++, Java, Go, Swift, Kotlin, Rust, C, C# comments (//, /* */)
     STAR_PATTERN: /(\/\/)([^\n]*)|(\/\*)([\s\S]*?)\*\/\s*/g,
 

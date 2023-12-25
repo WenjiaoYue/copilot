@@ -9,7 +9,7 @@ type SearchMatchResult = {
 };
 
 function matchLanguageId(languageId: string | undefined): string {
-    const languageMap = new Map<string, string>([
+    const languageMap = new Map<string | undefined, string>([
         ["typescript", "STAR_PATTERN"],
         ["javascript", "STAR_PATTERN"],
         ["cpp", "STAR_PATTERN"],
@@ -26,11 +26,10 @@ function matchLanguageId(languageId: string | undefined): string {
         ["python", "PYTHON_PATTERN"],
         ["css", "CSS_PATTERN"],
         ["html", "HTML_PATTERN"],
+        [undefined, "No match found"]
     ]);
 
-    const defaultResult = "No match found";
-
-    return languageMap.get(languageId) || defaultResult;
+    return languageMap.get(languageId) || "No match found";
 }
 
 
