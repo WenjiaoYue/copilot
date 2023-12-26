@@ -88,11 +88,6 @@
 					"description": "Code Chat URL",
 					"type": "string",
 					"default": "https://talkingphoto.eglb.intel.com/v1/code_chat"
-				},
-				"neuralCopilot.settings.maxResults": {
-					"type": "integer",
-					"description": "Limit the max number of results",
-					"default": 12
 				}
 			}
 		}

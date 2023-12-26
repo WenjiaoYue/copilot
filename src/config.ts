@@ -27,7 +27,6 @@ type IConfig = {
         codeChatUrl: string;
         hqModeUrl: string,
         fastModeUrl: string,
-        maxResults: number
     }
 }
 
@@ -39,7 +38,6 @@ export function getConfig() {
             hqModeUrl: config.settings.sites.highQuality,
             fastModeUrl: config.settings.sites.fastMode,
             codeChatUrl:  config.settings.sites.codeChat,
-            maxResults: config.settings.maxResults
         }
     } as IConfig;
 }
