@@ -4,6 +4,10 @@
 	"description": "Find snippets codes from Neural Copilot",
 	"version": "0.0.1",
 	"publisher": "ITEX",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/WenjiaoYue/copilot.git"
+	},
 	"aiKey": "",
 	"engines": {
 		"vscode": "^1.73.0"
@@ -40,8 +44,8 @@
 				"command": "NeuralCopilot.exchangeMode",
 				"title": "Exchange Mode",
 				"icon": {
-					"dark": "src/images/dark/rightNavDark.svg",
-					"light": "src/images/light/rightNavLight.svg"
+					"dark": "src/images/dark/rightNavDark.png",
+					"light": "src/images/light/rightNavLight.png"
 				}
 			}
 		],
@@ -50,7 +54,7 @@
 				{
 					"id": "neural-chat-sideBar",
 					"title": "NEURAL COPILOT",
-					"icon": "src/images/dark/leftBarDark.svg"
+					"icon": "src/images/dark/leftBarDark.png"
 				}
 			]
 		},
