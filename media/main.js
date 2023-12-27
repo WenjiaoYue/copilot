@@ -139,7 +139,7 @@
                 } else {
                     if (codeBlockStart.test(updatedValue)) {
                         inCode = true;
-                        let language = extractLanguage(updatedValue);
+                        language = extractLanguage(updatedValue);
                         updatedValue = createCodeBlock('', language);
                     }
                 }
