@@ -135,7 +135,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
   }
 
   const currentDate = new Date();
-  console.log('SSE response start', currentDate);
+  console.log('SSE response start', currentDate.toISOString());
   
 
   const result: ChatGPTResult = {
@@ -156,7 +156,7 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         signal: abortSignal,
         onMessage: (data: string) => {
           const currentDate = new Date();
-          console.log('SSE response end', currentDate);
+          console.log('SSE response end', currentDate.toISOString());
           console.log('data', data.startsWith("b") ? data.slice(2, -1) : data);
 
           if (data === "[DONE]") {
