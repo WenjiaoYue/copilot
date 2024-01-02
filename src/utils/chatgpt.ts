@@ -134,6 +134,10 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
     body.conversation_id = conversationId;
   }
 
+  const currentDate = new Date();
+  console.log('SSE response start', currentDate);
+  
+
   const result: ChatGPTResult = {
     role: "assistant",
     id: uuidv4(),
@@ -151,7 +155,10 @@ export async function chatgptSendMessage(this: any, text: string, opts: ChatGPTS
         body: JSON.stringify(body),
         signal: abortSignal,
         onMessage: (data: string) => {
+          const currentDate = new Date();
+          console.log('SSE response end', currentDate);
           console.log('data', data.startsWith("b") ? data.slice(2, -1) : data);
+
           if (data === "[DONE]") {
             return resolve(result);
           }
