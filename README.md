@@ -33,7 +33,7 @@ To install Neural Copilot extension package:
 ```
 npm install -g vsce
 ```
-2. Packaged into vsce file:
+2. Package into a VSCE file:
 ```
 vsce package
 ```
