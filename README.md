@@ -12,19 +12,35 @@ Neural Copilot is a VSCode plugin that serves as your AI programming assistant, 
 Table of contents:
 
 - [Neural Copilot — Your AI programming assistant for VSCode](#Neural-Copilot--code-suggestion-for-vscode)
-  - [1. Install extension from the marketplacet](#1-install-extension-from-the-marketplacet)
-  - [2. Installation for Development](#2-installation-for-development)
-  - [3. How to use](#3-how-to-use)
+  - [1. Install extension from the marketplace](#1-install-extension-from-the-marketplace)
+  - [2. Install extension offline](#2-install-extension-offline)
+  - [3. Installation for Development](#3-installation-for-development)
+  - [4. How to use](#4-how-to-use)
     - [Switch mode](#switch-mode)
     - [Code suggestion](#code-suggestion)
     - [Chat with AI assistant](#chat-with-ai-assistant)
 
 ---
-## 1. Install extension from the marketplacet
+## 1. Install extension from the marketplace
 
-Not supported yet, please refer to [Installation for Development](#2-installation-for-development) to try the plugin for now.
+Not supported yet, please refer to [Install extension offline](#2-install-extension-offline) or [Installation for Development](#3-installation-for-development) to try the plugin for now.
 
-## 2. Installation for Development
+## 2. Install extension offline
+
+To install Neural Copilot extension package:
+
+1. Set up vsce:
+```
+npm install -g vsce
+```
+2. Packaged into vsce file:
+```
+vsce package
+```
+3. install from VSIX:
+<img src="https://i.imgur.com/Ox78csb.png" alt="drawing" width="600"/>
+
+## 3. Installation for Development
 
 To install and starting Neural Copilot:
 
@@ -39,11 +55,11 @@ node -v
 
 2. Clone this repository to your PC using `git clone https://github.com/WenjiaoYue/copilot`.
 
-2. Change working directory to project folder using `cd copilot`.
+3. Change working directory to project folder using `cd copilot`.
 
-3. Run `npm install` in the terminal to install dfependencies.
+4. Run `npm install` in the terminal to install dependencies.
 
-4. Now, you can start the extension. From the top menu, choose `Run > Start Debugging`.
+5. Now, you can start the extension. From the top menu, choose `Run > Start Debugging`.
 
 This will:
 
@@ -52,12 +68,12 @@ This will:
 
 _Note: When you make changes, you should refresh that window to apply changes. To refresh, open Command Palette (Command+Shift+P on MacOS, or Ctrl+Shift+P on Windows), then choose "Developer: Reload window"_
 
-## 3. How to use
+## 4. How to use
 
 ### Switch mode
 Neural Copilot supports both high quality mode (default mode) and fast mode, and allows you to switch between them with one click according to your needs：
 - High quality mode: Using remote server's service
-- Fast mode: Using local local client's service
+- Fast mode: Using local client's service
 
 To switch between the two modes, you can click on the icon in the upper right corner:
 
