@@ -389,7 +389,7 @@
             e.preventDefault();
             vscode.postMessage({
                 type: "editCode",
-                value: targetButton.parentElement?.previousElementSibling.innerText
+                value: targetButton.parentElement?.previousElementSibling.innerText.trimEnd()
             });
 
             return;
