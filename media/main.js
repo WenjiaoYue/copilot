@@ -113,7 +113,7 @@
                 }
 
                 function createCodeBlock(updatedValue, language) {
-                    return `<pre class="border border-white code-background my-2 p-2 pb-0 text-md block overflow-x-scroll rounded  whitespace-pre-wrap"><code class="language-${language} code-background p-2 text-[0.95rem] block overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                    return `<pre class="border border-white code-background my-2 p-2 pb-0 text-[0.95rem] block overflow-x-scroll rounded  whitespace-pre-wrap"><code class="language-${language} code-background p-2 text-[0.95rem] block overflow-x-scroll rounded">${updatedValue}</code></pre>`;
                 }
 
                 if (existingMessage) {
@@ -148,7 +148,7 @@
                     existingMessage.innerHTML = updatedValue;
                 } else {
                     list.innerHTML +=
-                        `<div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext text-md">
+                        `<div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext text-[0.95rem]">
                         <h2 class="mb-2 flex">${aiSvg}Neural Copilot</h2>
                         <div class="result-streaming" id="${message.id}">${updatedValue}</div>
                     </div>`;
