@@ -76,7 +76,7 @@
                 };
 
                 list.innerHTML +=
-                    `<div class="px-4 py-2 self-end mt-1 question-element-ext relative text-md">
+                    `<div class="px-4 py-2 self-end mt-1 question-element-ext relative text-[0.95rem]">
                         <h2 class="flex items-center" data-license="isc-gnc">${userSvg}User</h2>
                         <no-export class="mb-2 flex items-center" data-license="isc-gnc">
                             <div class="hidden send-cancel-elements-ext flex gap-2">
@@ -113,7 +113,7 @@
                 }
 
                 function createCodeBlock(updatedValue, language) {
-                    return `<pre class="border border-white code-background my-2 p-2 pb-0 text-md block overflow-x-scroll rounded  whitespace-pre-wrap"><code class="language-${language} code-background p-2 text-md block overflow-x-scroll rounded">${updatedValue}</code></pre>`;
+                    return `<pre class="border border-white code-background my-2 p-2 pb-0 text-md block overflow-x-scroll rounded  whitespace-pre-wrap"><code class="language-${language} code-background p-2 text-[0.95rem] block overflow-x-scroll rounded">${updatedValue}</code></pre>`;
                 }
 
                 if (existingMessage) {
@@ -202,7 +202,7 @@
 
                 list.innerHTML +=
                     `
-                <div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext text-md">
+                <div data-license="isc-gnc" class="p-4 self-end mt-1 answer-element-ext text-[0.95rem]">
                         <h2 class="mb-2 flex">${aiSvg}Neural Copilot</h2>
                         <div class="result-streaming" id="${message.id}">${marked.parse(messageValue)}</div>
                     </div>
