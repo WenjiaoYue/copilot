@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import ChatGptViewProvider from './chatgpt-view-provider';
 
 
-import { search } from './utils/search';
+import { search, completeCode } from './utils/search';
 import { matchSearchPhrase } from './utils/matchSearchPhrase';
 import { mode } from './config';
 
@@ -75,6 +75,23 @@ export function activate(context: vscode.ExtensionContext) {
                             };
                         });
                     }
+                } catch (err: any) {
+                    vscode.window.showErrorMessage(err.toString());
+                }
+            } else {
+                vscode.window.setStatusBarMessage(`$(sync~spin) NeuralCopilot: Start loading snippet results...`);
+                let rs;
+                try {
+                    console.log(document.getText())
+                    rs = await completeCode(document.getText());
+                    console.log('rs', rs)
+
+                    vscode.window.setStatusBarMessage(`$(copilot) NeuralCopilot: Finished loading result`);
+                    items = [{
+                        text: rs,
+                        insertText: rs,
+                        range: new vscode.Range(position.translate(0, rs.length), position)
+                    }];
                 } catch (err: any) {
                     vscode.window.showErrorMessage(err.toString());
                 }

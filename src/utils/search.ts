@@ -51,3 +51,9 @@ export async function search(keyword: string): Promise<null | { results: Snippet
     vscode.window.setStatusBarMessage(`$(sync~spin) NeuralCopilot: Start loading snippet results...`, promise);
     return promise;
 }
+
+
+export async function completeCode(aboveText: string) {
+    // back_end api
+    return await fetchTextContent(aboveText);
+}
